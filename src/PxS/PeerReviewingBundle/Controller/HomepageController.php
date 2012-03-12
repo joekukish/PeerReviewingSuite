@@ -5,11 +5,11 @@ namespace PxS\PeerReviewingBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 
-class HomepageController extends Controller
+class DefaultController extends Controller
 {
-
-	public function indexAction()
-	{
-		return $this->render('PxSPeerReviewingBundle:Homepage:index.html.twig', array('name' => 'hola'));
-	}
+    
+    public function indexAction($name)
+    {
+        return $this->render('PxSPeerReviewingBundle:Homepage:index.html.twig', array('name' => $name));
+    }
 }
