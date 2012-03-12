@@ -35,11 +35,11 @@ class Review
 	 * @ORM\JoinColumn(name="presenter_id", referencedColumnName="id")
 	 */
 	protected $presenter;
-	
+
 	/**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="reviews")
-     * @ORM\JoinColumn(name="reviewer_id", referencedColumnName="id")
-     */
+	 * @ORM\ManyToOne(targetEntity="User", inversedBy="reviews")
+	 * @ORM\JoinColumn(name="reviewer_id", referencedColumnName="id")
+	 */
 	protected $reviewer;
 
 	public function __construct()

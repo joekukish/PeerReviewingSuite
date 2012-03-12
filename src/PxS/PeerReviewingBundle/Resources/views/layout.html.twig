@@ -1,0 +1,22 @@
+{% extends '::base.html.twig' %}
+	
+{% block navbar %}
+	{% include "NothingNebulaAdminBundle::navbar.html.twig" %}
+{% endblock %}
+	
+{% block body %}
+	<div class="wrapper">
+		<div class="container-fluid">
+			<div class="row-fluid">
+				{% include "NothingNebulaAdminBundle::sidebar.html.twig" %}
+				<div class="span10">
+				{{ block('flashes') }}
+				{% block content %}
+	   
+				{% endblock %}
+				</div>
+			</div>
+		</div>
+		<div class="push"><!--//--></div>       
+	</div>
+{% endblock %}
