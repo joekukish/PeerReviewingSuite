@@ -22,6 +22,11 @@ class User
 	 * @ORM\Column(type="string", unique="true")
 	 */
 	protected $name;
+	
+	/**
+	 * @ORM\Column(type="string", unique="true")
+	 */
+	protected $email;
 
 	/**
 	 * @ORM\OneToMany(targetEntity="Review", mappedBy="reviewer")
@@ -97,4 +102,24 @@ class User
 	{
 		return $this->presentations;
 	}
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
 }

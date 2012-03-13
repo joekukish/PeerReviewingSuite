@@ -2,8 +2,13 @@
 
 {% block content %}
 	<div class="row">
-		<div class="well span4 offset4">
-			<h2>Welcome! {{ name }} </h2>
+		<div class="span12">
+			<h2>Welcome! {{ user.name }} </h2>
+			<ol>
+				{% for entry in reviews %}
+					<li>{{ entry.id }} {{ entry.score }} {{ entry.presenter.name }} {{ entry.reviewer.name }}</li>
+				{% endfor %}
+			</ol>
 		</div>
 	</div>
 {% endblock %}

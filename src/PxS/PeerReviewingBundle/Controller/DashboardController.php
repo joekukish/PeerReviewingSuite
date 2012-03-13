@@ -9,6 +9,15 @@ class DashboardController extends Controller
 {
     public function indexAction($user)
     {
-        return $this->render('PxSPeerReviewingBundle:Dashboard:index.html.twig', array('name' => 'Oscar!'));
+    	$user = $this->getDoctrine()->getRepository('PxSPeerReviewingBundle:User')
+    			->find($user);
+    			
+		$presentations = $user->getPresentations();
+
+//        $reviews = $this->getDoctrine()
+//    		->getRepository('PxSPeerReviewingBundle:Review')
+//    		->findBy(array(), array('timestamp'=>'asc'));
+	    
+        return $this->render('PxSPeerReviewingBundle:Dashboard:index.html.twig', array('user' => $user, 'reviews' => $presentations));
     }
 }

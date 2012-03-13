@@ -1,0 +1,7 @@
+@CHARSET "UTF-8";
+
+.navbar .brand {
+	background: url("../img/PxS-logo-small.png") no-repeat scroll 0 center;
+	margin-left: 0px;
+	padding-left: 75px;
+}

@@ -9,38 +9,57 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="review")
  */
-// (repositoryClass="PxS\PeerReviewingBundle\Entity\UserRepository")
+// (repositoryClass="PxS\PeerReviewingBundle\Entity\ReviewRepository")
 class Review
 {
 	/**
+	 * Identifier of the Review.
+	 * 
 	 * @ORM\Id
 	 * @ORM\Column(type="integer")
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	protected $id;
 	/**
+	 * Datetime in which the Review was created.
+	 * 
 	 * @ORM\Column(type="datetime")
 	 */
 	protected $timestamp;
 	/**
+	 * Comments added to the Review.
+	 * 
 	 * @ORM\OneToMany(targetEntity="Comment", mappedBy="review")
 	 */
 	protected $comments;
 	/**
+	 * Overall score of the presentation.
+	 * 
 	 * @ORM\Column(type="float")
 	 */
 	protected $score;
 	/**
+	 * Presenter
+	 * 
 	 * @ORM\ManyToOne(targetEntity="User", inversedBy="presentations")
 	 * @ORM\JoinColumn(name="presenter_id", referencedColumnName="id")
 	 */
 	protected $presenter;
 	
 	/**
+	 * Reviewer.
+	 * 
      * @ORM\ManyToOne(targetEntity="User", inversedBy="reviews")
      * @ORM\JoinColumn(name="reviewer_id", referencedColumnName="id")
      */
 	protected $reviewer;
+	
+	/**
+	 * Assignment where this review corresponds to.
+	 * 
+	 * @ORM\Column(type="string")
+	 */
+	protected $assignment;
 
 	public function __construct()
 	{
@@ -156,4 +175,24 @@ class Review
 	{
 		return $this->comments;
 	}
+
+    /**
+     * Set assignment
+     *
+     * @param string $assignment
+     */
+    public function setAssignment($assignment)
+    {
+        $this->assignment = $assignment;
+    }
+
+    /**
+     * Get assignment
+     *
+     * @return string 
+     */
+    public function getAssignment()
+    {
+        return $this->assignment;
+    }
 }
