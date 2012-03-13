@@ -3,12 +3,28 @@
 {% block content %}
 	<div class="row">
 		<div class="well span4 offset4">
-		<form class="form-vertical" action="{{ path('PxSPeerReviewingBundle_homepage') }}" method="POST">
 			<h2>Welcome!</h2>
 			<p>Select the reviewer from the list. </p>
-			<input type="text" name="_username" id="username" value="{{ name }}" />
-			<input type="submit" class="btn btn-primary" style="margin-bottom:9px;" value="Enter!" />
-		</form>
+			<select id="select-users">
+				{% for entry in users %}
+	                <option value="{{ entry.id }}">{{ entry.name }}</option>
+				{% endfor %}
+			</select>
+			<a id="enter-button" class="btn btn-primary" href="{{ path('PxSPeerReviewingBundle_dashboard', {user:users[0].id }) }}"  rel="{{ path('PxSPeerReviewingBundle_dashboard', {user:'' }) }}" style="margin-bottom:9px;">Enter! </a>
 		</div>
 	</div>
 {% endblock %}
+
+{% block javascripts %}
+<script>
+	
+		$('#select-users').change(function() 
+		{
+			$('#enter-button').attr('href', $('#enter-button').attr('rel') + $(this).attr('value') );
+			
+		   alert('Value change to ' + $(this).attr('value'));
+		});
+	
+</script>
+{% endblock %}
+

@@ -9,6 +9,14 @@ class HomepageController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('PxSPeerReviewingBundle:Homepage:index.html.twig', array('name' => 'Oscar!'));
+    	$users = $this->getDoctrine()
+    		->getRepository('PxSPeerReviewingBundle:User')
+    		->findBy(array(), array('name'=>'asc'));
+
+	    if (!$users) {
+	        throw $this->createNotFoundException('No product found for id ');
+	    }		
+    		
+        return $this->render('PxSPeerReviewingBundle:Homepage:index.html.twig', array('users' => $users));
     }
 }
