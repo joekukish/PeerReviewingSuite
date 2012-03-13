@@ -16,15 +16,11 @@
 {% endblock %}
 
 {% block javascripts %}
-<script>
-	
+	<script>
 		$('#select-users').change(function() 
 		{
 			$('#enter-button').attr('href', $('#enter-button').attr('rel') + $(this).attr('value') );
-			
-		   alert('Value change to ' + $(this).attr('value'));
 		});
-	
-</script>
+	</script>
 {% endblock %}
 
