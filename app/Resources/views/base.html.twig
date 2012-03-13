@@ -2,12 +2,26 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="author" content="@oscarbolanos">
+        
         <title>{% block title %}Welcome!{% endblock %}</title>
+        
+        {# Le HTML5 shim, for IE6-8 support of HTML elements #}
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		{# Stylesheets #}
+		<link href="{{ asset('bundles/pxspeerreviewing/css/bootstrap.css') }}" rel="stylesheet">
         {% block stylesheets %}{% endblock %}
+        
+        {# Application icon #}
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    <body>
+    <body style="margin-top:60px">
+    	{% block header %}{% endblock %}
         {% block body %}{% endblock %}
+        {% block footer %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>
