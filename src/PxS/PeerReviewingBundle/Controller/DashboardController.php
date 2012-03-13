@@ -7,8 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DashboardController extends Controller
 {
-    public function indexAction()
+    public function indexAction($user)
     {
-        return $this->render('PxSPeerReviewingBundle:Homepage:index.html.twig', array('name' => 'Oscar!'));
+        return $this->render('PxSPeerReviewingBundle:Dashboard:index.html.twig', array('name' => 'Oscar!'));
     }
 }

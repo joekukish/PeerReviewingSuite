@@ -3,12 +3,13 @@
 {% block content %}
 	<div class="row">
 		<div class="well span4 offset4">
-		<form class="form-vertical" action="{{ path('PxSPeerReviewingBundle_homepage') }}" method="POST">
-			<h2>Welcome!</h2>
-			<p>Select the reviewer from the list. </p>
-			<input type="text" name="_username" id="username" value="{{ name }}" />
-			<input type="submit" class="btn btn-primary" style="margin-bottom:9px;" value="Enter!" />
-		</form>
+			<h2>Welcome! {{ name }} </h2>
 		</div>
 	</div>
 {% endblock %}
+
+{% block javascripts %}
+	<script>
+	</script>
+{% endblock %}
+
