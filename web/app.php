@@ -1,7 +1,4 @@
 <?php
-
-date_default_timezone_set('Europe/Berlin');
-
 require_once __DIR__.'/../app/bootstrap.php.cache';
 require_once __DIR__.'/../app/AppKernel.php';
 //require_once __DIR__.'/../app/AppCache.php';
