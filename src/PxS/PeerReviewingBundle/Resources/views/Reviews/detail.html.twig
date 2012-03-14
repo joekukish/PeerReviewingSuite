@@ -1,0 +1,174 @@
+{% extends "PxSPeerReviewingBundle::layout.html.twig" %}
+
+{% import "PxSPeerReviewingBundle::macros.html.twig" as m %}
+
+{% block content %}
+	<div class="row">
+		<div class="span12">
+		
+			<h2>Peer Reviewing</h2>
+			<p> Enter a scored based on the usefulness of each comment. </p>
+		
+			<div class="review-group-item review-group-details">
+				<img rel="tooltip" data-original-title="{{ review.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+				<div class="arrow">
+					<i class="icon-arrow-right"></i>
+				</div>
+				<img rel="tooltip" data-original-title="{{ review.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+				<p class="review-title "> {{ review.assignment }} </p>
+				<p class="review-date">{{ review.timestamp | date('M d')}}</p>
+				<div class="review-right-components">
+					<ul class="review-stats">
+						<li>
+				            <strong>{{ review.score | number_format(1, ".", " ")}}</strong>
+				            <span>score</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span6">
+			<form>
+				{% set ideaCount = 0 %}
+				{% for comment in review.comments %}
+					<div class="review-comment">
+						<h3>
+							{% if comment.type == 'idea' %}
+								{% set ideaCount = ideaCount + 1 %}
+								{{ comment.type | capitalize }} {{ ideaCount }}
+							{% else %}	
+								{{ comment.type | capitalize }}
+							{% endif %}
+					 		{{ m.starRating(comment.id, comment.score | default('0')) }}
+						</h3>
+						<pre><p>{{ comment.description }}</p></pre>
+					</div>
+				{% endfor %}
+				
+				<div class="review-actions">
+					<button type="submit" class="btn btn-primary" > Submit </button>
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('bundles/pxspeerreviewing/js/jquery.rating.min.js') }}"></script>
+	<script>
+		$('body').tooltip({
+				selector: "[rel=tooltip]",
+				placement: "bottom"
+			});
+		 
+			$('form :radio.star').rating();
+	</script>
+{% endblock %}
+
+		
+        
+{% block stylesheets %}
+	<link href="{{ asset('bundles/pxspeerreviewing/css/jquery.rating.css') }}" rel="stylesheet">
+	<style>		
+		.review-right-components ul.review-stats {
+			float: left;
+			margin-top: -8px;
+			margin-right: 0px;
+		}
+		.review-right-components ul.review-stats li {
+			list-style-type: none;
+			float: left;
+			margin-right: 20px;
+		}
+		.review-right-components ul.review-stats li strong {
+			display: block;
+			font-size: 36px;
+			font-weight: bold;
+			color: black;
+			line-height:50px;
+		}
+		.review-right-components ul.review-stats li span {
+			display: block;
+			margin-top: -10px;
+			font-size: 11px;
+			color: #999;
+		}
+
+		.review-group {
+			list-style-type: none;
+			margin: 15px 0;
+			background: #F7FBFC;
+			border: 1px solid #C5D5DD;
+			border-radius: 4px;
+			
+		}
+		
+		.review-group-item {
+			position: relative;
+			padding: 8px;
+			height: 50px;
+			border-top: 1px solid #C5D5DD; 
+		}		
+
+		.review-group-item:first-child {
+			border-top:none;
+		}
+				
+		ol .review-group-item:hover {
+			background: #FCFCE2;
+		}
+		
+		.review-group-item .gravatar {
+			float: left;
+			border: 1px solid #C6C6C6;
+			margin-right: 5px;
+		}
+		
+		.review-group-item .arrow {
+			float: left;
+			margin-top: 17px;
+			margin-right: 5px;
+		}
+		
+		.review-group-item .review-title {
+			margin: 1px 0 1px 0;
+			font-size: 17px;
+			font-weight: bold;
+			margin-top:7px;
+		}
+
+		.review-group-item .review-right-components {
+			position:absolute;
+			top:8px;
+			right:8px;
+		}
+		
+		.review-group-item .review-detail-link {
+			float:left;
+			margin-top:13px;
+		}
+		
+		.review-group-item .review-date {
+			font-size: 12px;
+			color: #888;
+		}
+		
+		.review-comment {
+			margin-top:20px;
+		}
+		.review-actions {
+			margin-top:20px;
+		}
+		.review-group-details {
+			border:none;
+			padding-left:0px;
+		}
+		.review-star-rating {
+			float:right;
+		}
+		
+	</style>
+{% endblock %}
+

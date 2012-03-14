@@ -4,13 +4,12 @@ PxSPeerReviewingBundle_homepage:
 
 PxSPeerReviewingBundle_reviews:
     pattern:  /{user}/reviews
-    defaults: { _controller: PxSPeerReviewingBundle:Reviews:index }
+    defaults: { _controller: PxSPeerReviewingBundle:Reviews:reviews }
     
 PxSPeerReviewingBundle_peer_reviews:
-    pattern:  /{user}/peer-reviews
-    defaults: { _controller: PxSPeerReviewingBundle:PeerReviews:index }
-    
-    
+    pattern:  /{user}/peer
+    defaults: { _controller: PxSPeerReviewingBundle:Reviews:peer }
+
 PxSPeerReviewingBundle_reviews_detail:
     pattern:  /{user}/reviews/{review}
     defaults: { _controller: PxSPeerReviewingBundle:Reviews:detail }
