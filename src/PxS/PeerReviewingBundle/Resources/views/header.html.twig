@@ -2,6 +2,15 @@
 	<div class="navbar-inner">
 		<div class="container">
 			<a class="brand" href="#">PeerReview</a>
+			{% if user is defined %}
+			<ul class="nav">
+				<li class="active"><a href="#">Reviews</a></li>
+				<li><a href="#">PeerReviews</a></li>
+			</ul>
+			<ul class="nav pull-right">
+				<li><a href="{{ path('PxSPeerReviewingBundle_homepage')}}">Change User</a></li>
+			</ul>
+			{% endif %}
 		</div>
 	</div>
 </div>
