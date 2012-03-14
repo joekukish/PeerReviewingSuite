@@ -2,6 +2,10 @@ PxSPeerReviewingBundle_homepage:
     pattern:  /
     defaults: { _controller: PxSPeerReviewingBundle:Homepage:index }
 
-PxSPeerReviewingBundle_dashboard:
-    pattern:  /{user}
-    defaults: { _controller: PxSPeerReviewingBundle:Dashboard:index }
+PxSPeerReviewingBundle_reviews:
+    pattern:  /{user}/reviews
+    defaults: { _controller: PxSPeerReviewingBundle:Reviews:index }
+    
+PxSPeerReviewingBundle_peer_reviews:
+    pattern:  /{user}/peer-reviews
+    defaults: { _controller: PxSPeerReviewingBundle:PeerReviews:index }

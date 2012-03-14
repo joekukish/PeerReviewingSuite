@@ -5,7 +5,7 @@ namespace PxS\PeerReviewingBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 
-class DashboardController extends Controller
+class ReviewsController extends Controller
 {
     public function indexAction($user)
     {
@@ -18,6 +18,6 @@ class DashboardController extends Controller
     		->getRepository('PxSPeerReviewingBundle:Review')
     		->findBy(array(), array('timestamp'=>'asc'));
 	    
-        return $this->render('PxSPeerReviewingBundle:Dashboard:index.html.twig', array('user' => $user, 'reviews' => $reviews));
+        return $this->render('PxSPeerReviewingBundle:Reviews:index.html.twig', array('user' => $user, 'reviews' => $reviews));
     }
 }

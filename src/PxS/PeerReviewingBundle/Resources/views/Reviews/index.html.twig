@@ -7,11 +7,11 @@
 			<ol class="review-group">
 				{% for entry in reviews %}
 					<li class="review review-group-item">
-						<img rel="tooltip" data-original-title="{{ entry.reviewer.email | md5 }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/2f4e7cb98fa73778501722368d19de15?s=140&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" width="48" />
+						<img rel="tooltip" data-original-title="{{ entry.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- entry.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
 						<div class="arrow">
 							<i class="icon-arrow-right"></i>
 						</div>
-						<img rel="tooltip" data-original-title="{{ entry.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/2f4e7cb98fa73778501722368d19de15?s=140&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" width="48" />
+						<img rel="tooltip" data-original-title="{{ entry.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- entry.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
 						<p class="review-title "> {{ entry.assignment }} </p>
 						<div class="review-meta">
 							<div class="review-links">
@@ -23,7 +23,7 @@
 						</div>
 					</li>
 				{% endfor %}
-			</ol>		
+			</ol>
 		</div>
 	</div>
 {% endblock %}

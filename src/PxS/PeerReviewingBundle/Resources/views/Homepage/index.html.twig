@@ -1,7 +1,7 @@
 {% extends "PxSPeerReviewingBundle::layout.html.twig" %}
 
 {% block content %}
-	<div class="row">
+	<div class="row" style="padding-top: 100px;">
 		<div class="well span4 offset4">
 			<h2>Welcome!</h2>
 			<p>Select the reviewer from the list. </p>
@@ -10,16 +10,15 @@
 	                <option value="{{ entry.id }}">{{ entry.name }}</option>
 				{% endfor %}
 			</select>
-			<a id="enter-button" class="btn btn-primary" href="{{ path('PxSPeerReviewingBundle_dashboard', {user:users[0].id }) }}"  rel="{{ path('PxSPeerReviewingBundle_dashboard', {user:'' }) }}" style="margin-bottom:9px;">Enter! </a>
+			<a id="enter-button" class="btn btn-primary" href="{{ path('PxSPeerReviewingBundle_reviews', {user:users[0].id }) }}"  rel="{{ path('PxSPeerReviewingBundle_reviews', {user:'%user%' })  }}" style="margin-bottom:9px;">Enter! </a>
 		</div>
 	</div>
 {% endblock %}
 
 {% block javascripts %}
 	<script>
-		$('#select-users').change(function() 
-		{
-			$('#enter-button').attr('href', $('#enter-button').attr('rel') + $(this).attr('value') );
+		$('#select-users').change(function() {
+			$('#enter-button').attr('href', $('#enter-button').attr('rel').replace('%25user%25', $(this).attr('value')));
 		});
 	</script>
 {% endblock %}
