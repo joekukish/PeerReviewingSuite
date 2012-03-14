@@ -14,10 +14,10 @@ class DashboardController extends Controller
     			
 		$presentations = $user->getPresentations();
 
-//        $reviews = $this->getDoctrine()
-//    		->getRepository('PxSPeerReviewingBundle:Review')
-//    		->findBy(array(), array('timestamp'=>'asc'));
+        $reviews = $this->getDoctrine()
+    		->getRepository('PxSPeerReviewingBundle:Review')
+    		->findBy(array(), array('timestamp'=>'asc'));
 	    
-        return $this->render('PxSPeerReviewingBundle:Dashboard:index.html.twig', array('user' => $user, 'reviews' => $presentations));
+        return $this->render('PxSPeerReviewingBundle:Dashboard:index.html.twig', array('user' => $user, 'reviews' => $reviews));
     }
 }

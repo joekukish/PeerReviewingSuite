@@ -4,17 +4,147 @@
 	<div class="row">
 		<div class="span12">
 			<h2>Welcome! {{ user.name }} </h2>
-			<ol>
+			<ol class="review-group">
 				{% for entry in reviews %}
-					<li>{{ entry.id }} {{ entry.score }} {{ entry.presenter.name }} {{ entry.reviewer.name }}</li>
+					<li class="review review-group-item">
+						<img rel="tooltip" data-original-title="{{ entry.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/2f4e7cb98fa73778501722368d19de15?s=140&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" width="48" />
+						<div class="arrow">
+							<i class="icon-arrow-right"></i>
+						</div>
+						<img rel="tooltip" data-original-title="{{ entry.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/2f4e7cb98fa73778501722368d19de15?s=140&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" width="48" />
+						<p class="review-title "> {{ entry.assignment }} </p>
+						<div class="review-meta">
+							<div class="review-links">
+								<a href="{{ path('PxSPeerReviewingBundle_homepage')}}" class="gobutton ">
+									<span class="sha">3a06d49e44</span>
+								</a>
+							</div>
+							<div class="review-date">{{ entry.timestamp | date('M d')}}</div>
+						</div>
+					</li>
 				{% endfor %}
-			</ol>
+			</ol>		
 		</div>
 	</div>
 {% endblock %}
 
 {% block javascripts %}
 	<script>
+		$('body').tooltip({
+			selector: "[rel=tooltip]",
+			placement: "bottom"
+		});
 	</script>
+{% endblock %}
+
+{% block stylesheets %}
+	<style>
+		.review-group {
+			list-style-type: none;
+			margin: 15px 0;
+			background: #F7FBFC;
+			border: 1px solid #C5D5DD;
+			border-radius: 4px;
+			
+		}
+		
+		.review-group-item {
+			position: relative;
+			padding: 8px;
+			height: 50px;
+			border-top: 1px solid #C5D5DD; 
+		}
+
+		.review-group-item:first-child {
+			border-top:none;
+		}
+				
+		.review-group-item:hover {
+			background: #FCFCE2;
+		}
+		
+		.review-group-item .gravatar {
+			float: left;
+			border: 1px solid #C6C6C6;
+			margin-right: 5px;
+		}
+		
+		.review-group-item .arrow {
+			float: left;
+			margin-top: 17px;
+			margin-right: 5px;
+		}
+		
+		.review-group-item .review-title {
+			margin: 1px 0 1px 0;
+			font-size: 16px;
+			font-weight: bold;
+			color: #333;
+		}
+		
+		.review .review-title, .review .review-title a {
+			color: #4E575B;
+		}
+		.review-group-item .review-links {
+			position: absolute;
+			top: 7px;
+			right: 8px;
+		}
+		
+		.review-group-item.navigation-focus .gobutton {
+			border-color: #E7E86D;
+			background: #F9FAC9;
+			filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#f9fac9',endColorstr='#f3f494');
+			background: -webkit-gradient(linear,left top,left bottom,from(#F9FAC9),to(#F3F494));
+			background: -moz-linear-gradient(top,#F9FAC9,#F3F494);
+		}
+		
+		.review-group-item .gobutton > .sha, .review-group-item.navigation-focus .gobutton:hover > .sha {
+			display: inline-block;
+			height: 22px;
+			padding-right: 18px;
+			margin-right: -3px;
+			background: url('bundles/pxspeerreviewing/img/gobutton-arrow.png') 100% 3px no-repeat;
+		}
+		
+		.review-group-item .review-date {
+			font-size: 12px;
+			color: #888;
+		}
+		
+		.review-group-item.navigation-focus .gobutton > .sha {
+			background-position: 100% -97px;
+		}
+		
+		.review .sha-block, .review .sha {
+			font-size: 11px;
+			font-family: Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono", monospace;
+		}
+		
+		.review-group-item .gobutton {
+			float: left;
+			height: 22px;
+			padding: 0 7px;
+			line-height: 22px;
+			font-size: 11px;
+			color: #4E575B;
+			text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+			background: #EFF6F9;
+			filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#eff6f9',endColorstr='#ddecf3');
+			background: -webkit-gradient(linear,left top,left bottom,from(#EFF6F9),to(#DDECF3));
+			background: -moz-linear-gradient(top,#EFF6F9,#DDECF3);
+			border: 1px solid #CEDEE5;
+			border-radius: 3px;
+		}
+		
+		.review-group-item:nth-child(2n+1) .gobutton {
+			border-color: #D5DCDF;
+			background: #F2F5F6;
+			filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#f2f5f6',endColorstr='#e3eaed');
+			background: -webkit-gradient(linear,left top,left bottom,from(#F2F5F6),to(#E3EAED));
+			background: -moz-linear-gradient(top,#F2F5F6,#E3EAED);
+		}
+		
+	</style>
 {% endblock %}
 
