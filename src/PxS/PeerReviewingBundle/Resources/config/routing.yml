@@ -9,3 +9,8 @@ PxSPeerReviewingBundle_reviews:
 PxSPeerReviewingBundle_peer_reviews:
     pattern:  /{user}/peer-reviews
     defaults: { _controller: PxSPeerReviewingBundle:PeerReviews:index }
+    
+    
+PxSPeerReviewingBundle_reviews_detail:
+    pattern:  /{user}/reviews/{review}
+    defaults: { _controller: PxSPeerReviewingBundle:Reviews:detail }
