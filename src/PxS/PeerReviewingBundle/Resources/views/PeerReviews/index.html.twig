@@ -1,9 +1,10 @@
 {% extends "PxSPeerReviewingBundle::layout.html.twig" %}
+
 {% block content %}
 	<div class="row">
 		<div class="span12">
 			<h2>Welcome! {{ user.name }} </h2>
-			{% if reviews | length > 0 %} 
+			{% if reviews | length > 0 %} 			
 				<ol class="review-group">
 					{% for entry in reviews %}
 						<li class="review review-group-item">
@@ -25,8 +26,8 @@
 					{% endfor %}
 				</ol>
 			{% else %}
-				<p> You have no reviews available </p>
-			{% endif %}
+				<p> You have no peer reviews available </p>
+			{% endif %}			
 		</div>
 	</div>
 {% endblock %}

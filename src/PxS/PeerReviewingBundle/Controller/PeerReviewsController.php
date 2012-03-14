@@ -11,13 +11,11 @@ class PeerReviewsController extends Controller
     {
     	$user = $this->getDoctrine()->getRepository('PxSPeerReviewingBundle:User')
     			->find($user);
-    			
-		$presentations = $user->getPresentations();
 
-        $reviews = $this->getDoctrine()
-    		->getRepository('PxSPeerReviewingBundle:Review')
-    		->findBy(array(), array('timestamp'=>'asc'));
+//        $reviews = $this->getDoctrine()
+//    		->getRepository('PxSPeerReviewingBundle:Review')
+//    		->findBy(array(), array('timestamp'=>'asc'));
 	    
-        return $this->render('PxSPeerReviewingBundle:PeerReviews:index.html.twig', array('user' => $user, 'reviews' => $reviews));
+        return $this->render('PxSPeerReviewingBundle:PeerReviews:index.html.twig', array('page'=>'peer-reviews', 'user' => $user, 'reviews' => $user->getPresentations()));
     }
 }

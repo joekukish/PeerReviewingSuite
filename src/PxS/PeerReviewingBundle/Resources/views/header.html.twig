@@ -1,14 +1,18 @@
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
-			<a class="brand" href="#">PeerReview</a>
+			{% if user is defined %}
+				<a class="brand" href="{{ path('PxSPeerReviewingBundle_reviews', { user: user.id }) }}">PeerReviewer</a>
+			{% else %}
+				<a class="brand" href="{{ path('PxSPeerReviewingBundle_homepage') }}">PeerReview</a>
+			{% endif %}
 			{% if user is defined %}
 			<ul class="nav">
-				<li class="active"><a href="#">Reviews</a></li>
-				<li><a href="#">PeerReviews</a></li>
+				<li {% if page == 'reviews' %} class="active" {% endif %}><a href="{{ path('PxSPeerReviewingBundle_reviews', { user: user.id }) }}">Reviews</a></li>
+				<li {% if page == 'peer-reviews' %} class="active" {% endif %}><a href="{{ path('PxSPeerReviewingBundle_peer_reviews', { user: user.id }) }}">Peer Reviews</a></li>
 			</ul>
 			<ul class="nav pull-right">
-				<li><a href="{{ path('PxSPeerReviewingBundle_homepage')}}">Change Reviewer</a></li>
+				<li><a href="{{ path('PxSPeerReviewingBundle_homepage') }}">Change Reviewer</a></li>
 			</ul>
 			{% endif %}
 		</div>
