@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="author" content="@oscarbolanos">
+        
+        <title>{% block title %}PxS{% endblock %}</title>
+        
+        {# Le HTML5 shim, for IE6-8 support of HTML elements #}
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		
+		{# Stylesheets #}
+		<link href="{{ asset('bundles/pxspeerreviewing/css/bootstrap.min.css') }}" rel="stylesheet">
+		<link href="{{ asset('bundles/pxspeerreviewing/css/style.css') }}" rel="stylesheet">
+        {% block stylesheets %}{% endblock %}
+        
+        {# Application icon #}
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body style="margin-top:60px">
+    	{% block header %}
+    		{% include "PxSPeerReviewingBundle::header.html.twig" %}
+    	{% endblock %}
+        {% block body %}
+        	<div class="container">	
+				{% block content %}			
+			        {% for key, message in app.session.getFlashes() %}
+				        <div class="alert-{{ key }}">
+				            {{ message|trans({}, 'FOSUserBundle') }}
+				        </div>
+			        {% endfor %}
+			        <div class="row" style="padding-top: 50px;">
+			        	<div class="well span4 offset4">
+				            {% block fos_user_content %}
+				            {% endblock fos_user_content %}
+			            </div>
+			        </div>
+				{% endblock %}
+			</div>
+        {% endblock %}
+        {% block footer %}{% endblock %}
+        
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="{{ asset('bundles/pxspeerreviewing/js/bootstrap.min.js') }}"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

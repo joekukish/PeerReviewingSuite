@@ -2,8 +2,15 @@
 {% block content %}
 	<div class="row">
 		<div class="span12">
-			<h2>Welcome! {{ user.name }} </h2>
-			{% if reviews | length > 0 %} 
+			<h2>
+				<div class="userbox clearfix">
+					<img rel="tooltip" data-original-title="{{ user.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- user.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+					<span>{{ user.name }}</span>
+				</div>
+			</h2>
+			<br />
+			{% if reviews | length > 0 %}
+				<p>This page contains the reviews that you've given. You can edit them, and learn about how your comments were rated here.</p> 
 				<ol class="review-group">
 					{% for entry in reviews %}
 						<li class="review-group-item">
@@ -16,16 +23,21 @@
 							<p class="review-date">{{ entry.timestamp | date('M d')}}</p>
 							<div class="review-right-components">
 								<ul class="review-stats">
+									{#
 									<li>
 							            <strong>{{ entry.score | number_format(1, ".", " ")}}</strong>
 							            <span>score</span>
 									</li>
+									#}
 									<li>
 							            <strong>NA</strong>
-							            <span>peer review</span>
+							            <span>feedback score</span>
+									</li>
+									<li>
+							            <strong><a href="{{ path('PxSPeerReviewingBundle_reviews_detail', { user: user.id, review: entry.id }) }}"><img height="24" width="24" src={{ asset('bundles/pxspeerreviewing/img/next.png') }} /></a></strong>
+							            <span>edit</span>
 									</li>
 								</ul>
-								<div class="review-detail-link"><a href="{{ path('PxSPeerReviewingBundle_reviews_detail', { user: user.id, review: entry.id }) }}"><img height="24" width="24" src={{ asset('bundles/pxspeerreviewing/img/next.png') }} /></a></div>
 							</div>
 						</li>
 					{% endfor %}
@@ -58,18 +70,24 @@
 			float: left;
 			margin-right: 20px;
 		}
+		
+		.review-right-components ul.review-stats li:last-child {
+			margin-right: 0px;
+		}
 		.review-right-components ul.review-stats li strong {
 			display: block;
 			font-size: 36px;
 			font-weight: bold;
 			color: black;
 			line-height:50px;
+			text-align:center;			
 		}
 		.review-right-components ul.review-stats li span {
 			display: block;
 			margin-top: -10px;
 			font-size: 11px;
 			color: #999;
+			text-align:center;
 		}
 
 		.review-group {
@@ -119,11 +137,6 @@
 			position:absolute;
 			top:8px;
 			right:8px;
-		}
-		
-		.review-group-item .review-detail-link {
-			float:left;
-			margin-top:13px;
 		}
 		
 		.review-group-item .review-date {

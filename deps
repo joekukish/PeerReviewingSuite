@@ -65,3 +65,7 @@
 [MopaBootstrapBundle]
     git=http://github.com/phiamo/MopaBootstrapBundle.git
     target=/bundles/Mopa/BootstrapBundle
+    
+[FOSUserBundle]
+    git=git://github.com/FriendsOfSymfony/FOSUserBundle.git
+    target=bundles/FOS/UserBundle

@@ -6,9 +6,9 @@ PxSPeerReviewingBundle_reviews:
     pattern:  /{user}/reviews
     defaults: { _controller: PxSPeerReviewingBundle:Reviews:reviews }
     
-PxSPeerReviewingBundle_peer_reviews:
+PxSPeerReviewingBundle_feedback:
     pattern:  /{user}/peer
-    defaults: { _controller: PxSPeerReviewingBundle:Reviews:peer }
+    defaults: { _controller: PxSPeerReviewingBundle:Reviews:feedback }
 
 PxSPeerReviewingBundle_reviews_detail:
     pattern:  /{user}/reviews/{review}

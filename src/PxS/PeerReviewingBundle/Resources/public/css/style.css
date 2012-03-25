@@ -5,3 +5,17 @@
 	margin-left: 0px;
 	padding-left: 75px;
 }
+
+.userbox .gravatar {
+	float:left;
+	border: 1px solid #C6C6C6;
+	margin-right: 5px;
+	
+}
+.userbox span {
+	vertical-align:middle;
+	float:left;
+	height:50px;
+	line-height:50px;
+	margin-top:2px;
+}
