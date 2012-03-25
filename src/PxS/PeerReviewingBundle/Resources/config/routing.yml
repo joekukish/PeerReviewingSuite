@@ -1,9 +1,17 @@
+PxSPeerReviewingBundle_dashboard:
+    pattern:  /
+    defaults: { _controller: PxSPeerReviewingBundle:Reviews:reviews }
+    
 PxSPeerReviewingBundle_reviews:
     pattern:  /reviews
     defaults: { _controller: PxSPeerReviewingBundle:Reviews:reviews }
 
+PxSPeerReviewingBundle_reviews_new:
+    pattern:  /reviews/new
+    defaults: { _controller: PxSPeerReviewingBundle:Reviews:new }
+    
 PxSPeerReviewingBundle_reviews_detail:
-    pattern:  /reviews/{review}
+    pattern:  /reviews/{id}
     defaults: { _controller: PxSPeerReviewingBundle:Reviews:detail }
     
 PxSPeerReviewingBundle_feedback:

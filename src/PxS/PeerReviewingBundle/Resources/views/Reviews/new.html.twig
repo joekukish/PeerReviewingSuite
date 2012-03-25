@@ -4,6 +4,11 @@
 
 {% block content %}
 
+<form action="{{ path('PxSPeerReviewingBundle_reviews_new') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+
+    <input class="btn btn-primary" type="submit" />
+</form>
 	{% if review is defined %}
 		<div class="row">
 			<div class="span12">
@@ -55,8 +60,6 @@
 				</form>
 			</div>
 		</div>
-	{% else %}
-		The selected review does not exit
 	{% endif %}
 {% endblock %}
 

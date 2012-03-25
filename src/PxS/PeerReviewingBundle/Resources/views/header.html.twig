@@ -1,21 +1,23 @@
+{% if page is not defined %}
+	{% set page = '' %}
+{% endif %}
+
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
-			{% if user is defined %}
+			{% if is_granted('ROLE_USER') and app.user is defined %}
 				<a class="brand" href="{{ path('PxSPeerReviewingBundle_reviews') }}">PeerReviewer</a>
-			{% else %}
-				<a class="brand" href="{{ path('fos_user_security_login') }}">PeerReviewer</a>
-			{% endif %}
-			{% if user is defined %}
 				<ul class="nav">
 					<li {% if page == 'reviews' %} class="active" {% endif %}><a href="{{ path('PxSPeerReviewingBundle_reviews') }}">Reviews</a></li>
 					<li {% if page == 'feedback' %} class="active" {% endif %}><a href="{{ path('PxSPeerReviewingBundle_feedback') }}">Feedback</a></li>
 					<li class="divider-vertical"></li>
-					<li {% if page == 'new-review' %} class="active" {% endif %}><a href="{{ path('PxSPeerReviewingBundle_feedback') }}">New Review</a></li>
+					<li {% if page == 'new-review' %} class="active" {% endif %}><a href="{{ path('PxSPeerReviewingBundle_reviews_new') }}">New Review</a></li>
 				</ul>
 				<ul class="nav pull-right">
 					<li><a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
 				</ul>
+			{% else %}
+				<a class="brand" href="{{ path('fos_user_security_login') }}">PeerReviewer</a>
 			{% endif %}
 		</div>
 	</div>

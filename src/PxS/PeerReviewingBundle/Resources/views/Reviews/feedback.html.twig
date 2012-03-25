@@ -4,8 +4,8 @@
 		<div class="span12">
 			<h2>
 				<div class="userbox clearfix">
-					<img rel="tooltip" data-original-title="{{ user.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- user.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
-					<span>{{ user.name }}</span>
+					<img rel="tooltip" data-original-title="{{ app.user.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- app.user.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+					<span>{{ app.user.name }}</span>
 				</div>
 			</h2>
 			<br />
@@ -31,7 +31,7 @@
 							            <span>feedback score</span>
 									</li>
 									<li>
-							            <strong><a href="{{ path('PxSPeerReviewingBundle_reviews_detail', { user: user.id, review: entry.id }) }}"><img height="24" width="24" src={{ asset('bundles/pxspeerreviewing/img/next.png') }} /></a></strong>
+							            <strong><a href="{{ path('PxSPeerReviewingBundle_reviews_detail', { id: entry.id }) }}"><img height="24" width="24" src={{ asset('bundles/pxspeerreviewing/img/next.png') }} /></a></strong>
 							            <span>view</span>
 									</li>
 								</ul>
