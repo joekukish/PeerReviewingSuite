@@ -2,43 +2,43 @@
 {% block content %}
 	<div class="row">
 		<div class="span12">
-			<h2>
-				<div class="userbox clearfix">
-					<img rel="tooltip" data-original-title="{{ app.user.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- app.user.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
-					<span>{{ app.user.name }}</span>
-				</div>
-			</h2>
+			<h2>{% include "PxSPeerReviewingBundle::userbox.html.twig" %}</h2>
 			<br />
 			{% if reviews | length > 0 %}
-				<p>This page contains the feedback you've received in your presentations. They are all anonymous and scoreless to discourage biased opinions.</p>
-				<p>A score can be assigned to each comment based on its usefulness, to do so, click on the view icon and add a rating to each comment using the stars. </p> 
-				<ol class="review-group">
-					{% for entry in reviews %}
-						<li class="review-group-item">
-							<img rel="tooltip" data-original-title="{{ entry.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- entry.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
-							<p class="review-title "> {{ entry.assignment }} </p>
-							<p class="review-date">{{ entry.timestamp | date('M d')}}</p>
-							<div class="review-right-components">
-								<ul class="review-stats">
-									{#
-									<li>
-							            <strong>{{ entry.score | number_format(1, ".", " ")}}</strong>
-							            <span>score</span>
-									</li>
-									#}
-									<li>
-							            <strong>NA</strong>
-							            <span>feedback score</span>
-									</li>
-									<li>
-							            <strong><a href="{{ path('PxSPeerReviewingBundle_reviews_detail', { id: entry.id }) }}"><img height="24" width="24" src={{ asset('bundles/pxspeerreviewing/img/next.png') }} /></a></strong>
-							            <span>view</span>
-									</li>
-								</ul>
-							</div>
-						</li>
-					{% endfor %}
-				</ol>
+				<p> Here's your feedback on the presentations you've made! They are all annonymous and scoreless to discourage biased opinions. You can rate each comment based on its usefulness. To do so, click on the view icon and use the stars to rate them.</p> 
+				{% for groupName, assignments in reviews %}
+					<h3 class="review-group-header"> {{ groupName }} </h3>
+					<ol class="review-group">
+						{% for entry in assignments %}
+							<li class="review-group-item">
+								<img rel="tooltip" data-original-title="{{ entry.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- entry.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+								<p class="review-title "> {{ entry.assignment }} </p>
+								<p class="review-date">{{ entry.timestamp | date('M d, h:ia')}}</p>
+								<div class="review-right-components">
+									<ul class="review-stats">									
+										{% set feedbackScore = 0 %}
+										{% set incomplete = false %}
+										
+										{% for comment in entry.comments if comment.score is not null %}
+											{% set feedbackScore = feedbackScore + comment.score  %}
+										{% else %}
+											{% set incomplete = true %}	
+										{% endfor %}
+
+										<li>
+								            <strong>{{ not incomplete ? ((feedbackScore / (entry.comments | length ))) | number_format(1, ".", " ") : 'NA' }}</strong>
+								            <span>feedback score</span>
+										</li>
+										<li>
+								            <strong><a href="{{ path('PxSPeerReviewingBundle_reviews_detail', { id: entry.id }) }}"><img height="24" width="24" src={{ asset('bundles/pxspeerreviewing/img/next.png') }} /></a></strong>
+								            <span>view</span>
+										</li>
+									</ul>
+								</div>
+							</li>
+						{% endfor %}
+					</ol>
+				{% endfor %}
 			{% else %}
 				<p> You have no reviews available </p>
 			{% endif %}
@@ -57,6 +57,18 @@
 
 {% block stylesheets %}
 	<style>
+	
+		.review-group-header {
+			margin: 15px 0 0 0;
+			padding: 0 8px;
+			font-size: 14px;
+			color: #3A505B;
+			text-shadow: 0 1px white;
+			background: #E6F1F6;
+			border: 1px solid #C5D5DD;
+			border-top-right-radius: 4px;
+			border-top-left-radius: 4px;
+		}
 		.review-right-components ul.review-stats {
 			float: left;
 			margin-top: -8px;
@@ -86,20 +98,21 @@
 			text-align:center;
 		}
 
-		.review-group {
+		.review-group {		
 			list-style-type: none;
-			margin: 15px 0;
+			margin: 0 0 15px 0;
 			background: #F7FBFC;
 			border: 1px solid #C5D5DD;
-			border-radius: 4px;
-			
+			border-top: none;
+			border-bottom-right-radius: 4px;
+			border-bottom-left-radius: 4px;
 		}
 		
 		.review-group-item {
 			position: relative;
 			padding: 8px;
 			height: 50px;
-			border-top: 1px solid #C5D5DD; 
+			border-top: 1px solid #C5D5DD;
 		}
 
 		.review-group-item:first-child {

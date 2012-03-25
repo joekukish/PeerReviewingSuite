@@ -1,0 +1,4 @@
+<div class="userbox clearfix">
+	<img rel="tooltip" data-original-title="{{ app.user.name }}" class="gravatar" src="https://secure.gravatar.com/avatar/{{- app.user.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" height="48" />
+	<span>{{ app.user.name }}</span>
+</div>

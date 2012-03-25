@@ -2,15 +2,12 @@
 {% block content %}
 	<div class="row">
 		<div class="span12">
-			<h2>
-				<div class="userbox clearfix">
-					<img rel="tooltip" data-original-title="{{ app.user.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- app.user.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
-					<span>{{ app.user.name }}</span>
-				</div>
-			</h2>
+			<h2>{% include "PxSPeerReviewingBundle::userbox.html.twig" %}</h2>
 			<br />
+			
 			{% if reviews | length > 0 %}
-				<p>This page contains the reviews that you've given. You can edit them, and learn about how your comments were rated here.</p> 
+				<p> These are reviews that you've given. Here you can view them, edit them and learn how your comments were rated.</p>
+				<h3 class="review-group-header">First Review</h3>
 				<ol class="review-group">
 					{% for entry in reviews %}
 						<li class="review-group-item">
@@ -60,6 +57,19 @@
 
 {% block stylesheets %}
 	<style>
+	
+		.review-group-header {
+			margin: 15px 0 0 0;
+			padding: 0 8px;
+			font-size: 14px;
+			color: #3A505B;
+			text-shadow: 0 1px white;
+			background: #E6F1F6;
+			border: 1px solid #C5D5DD;
+			border-top-right-radius: 4px;
+			border-top-left-radius: 4px;
+		}
+		
 		.review-right-components ul.review-stats {
 			float: left;
 			margin-top: -8px;
@@ -92,11 +102,12 @@
 
 		.review-group {
 			list-style-type: none;
-			margin: 15px 0;
+			margin: 0 0 15px 0;
 			background: #F7FBFC;
 			border: 1px solid #C5D5DD;
-			border-radius: 4px;
-			
+			border-top: none;
+			border-bottom-right-radius: 4px;
+			border-bottom-left-radius: 4px;
 		}
 		
 		.review-group-item {
