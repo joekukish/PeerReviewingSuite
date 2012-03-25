@@ -4,6 +4,8 @@ namespace PxS\PeerReviewingBundle\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+
 use PxS\PeerReviewingBundle\Entity\Review;
 use PxS\PeerReviewingBundle\Entity\Comment;
 use PxS\PeerReviewingBundle\Form\Type\ReviewType;
@@ -32,7 +34,7 @@ class ReviewsController extends PeerReviewingBundleBaseController
     		->getRepository('PxSPeerReviewingBundle:Review')
     		->findBy(array('presenter'=>$user->getId()), array('assignment'=>'DESC', 'timestamp'=>'DESC'));
 
-    		
+
 		// array where the reviews will be grouped by assignment.
 		$groupedReviews = array();
 		
@@ -104,11 +106,16 @@ class ReviewsController extends PeerReviewingBundleBaseController
     			->find($id);
 
 	    if (!$review) {
-	        throw $this->createNotFoundException('No review found with the given id '.$id);
+	        // throw $this->createNotFoundException('No review found with the given id '.$id);
+	        return $this->redirect($this->generateUrl('PxSPeerReviewingBundle_reviews'));
 	    }
-		// $page = $review->getReviewer()->getId() == $user->getId()? 'reviews':'feedback';
-    	$page = 'reviews';
-		
-		return $this->render('PxSPeerReviewingBundle:Reviews:detail.html.twig', array('page'=>$page, 'review' => $review));
+	    
+	    if($review->getReviewer()->getId() == $user->getId())
+			return $this->render('PxSPeerReviewingBundle:Reviews:detail.html.twig', array('page'=>'reviews', 'review' => $review));
+	    else if($review->getPresenter()->getId() == $user->getId())
+	    	return $this->render('PxSPeerReviewingBundle:Reviews:detail.html.twig', array('page'=>'feedback', 'review' => $review));
+	    else
+	    	return $this->redirect($this->generateUrl('PxSPeerReviewingBundle_reviews'));
+	    	
     }
 }
