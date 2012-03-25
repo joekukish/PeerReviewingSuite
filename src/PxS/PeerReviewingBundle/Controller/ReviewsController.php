@@ -2,15 +2,11 @@
 
 namespace PxS\PeerReviewingBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-
-class ReviewsController extends Controller
+class ReviewsController extends PeerReviewingBundleBaseController
 {
-    public function reviewsAction($user)
+    public function reviewsAction()
     {
-    	$user = $this->getDoctrine()->getRepository('PxSPeerReviewingBundle:User')
-    			->find($user);
+    	$user = $this->getUser();
 
 //        $reviews = $this->getDoctrine()
 //    		->getRepository('PxSPeerReviewingBundle:Review')
@@ -19,10 +15,9 @@ class ReviewsController extends Controller
         return $this->render('PxSPeerReviewingBundle:Reviews:reviews.html.twig', array('page'=>'reviews', 'user' => $user, 'reviews' => $user->getReviews()));
     }
     
-    public function feedbackAction($user)
+    public function feedbackAction()
     {
-    	$user = $this->getDoctrine()->getRepository('PxSPeerReviewingBundle:User')
-    			->find($user);
+    	$user = $this->getUser();
 
 //        $reviews = $this->getDoctrine()
 //    		->getRepository('PxSPeerReviewingBundle:Review')
@@ -31,10 +26,9 @@ class ReviewsController extends Controller
         return $this->render('PxSPeerReviewingBundle:Reviews:feedback.html.twig', array('page'=>'feedback', 'user' => $user, 'reviews' => $user->getPresentations()));
     }    
     
-    public function detailAction($user, $review)
+    public function detailAction($review)
     {
-        $user = $this->getDoctrine()->getRepository('PxSPeerReviewingBundle:User')
-    			->find($user);
+        $user = $this->getUser();
     			
 		$review = $this->getDoctrine()->getRepository('PxSPeerReviewingBundle:Review')
     			->find($review);

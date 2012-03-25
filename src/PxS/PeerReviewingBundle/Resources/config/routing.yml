@@ -1,15 +1,11 @@
-PxSPeerReviewingBundle_homepage:
-    pattern:  /
-    defaults: { _controller: PxSPeerReviewingBundle:Homepage:index }
-
 PxSPeerReviewingBundle_reviews:
-    pattern:  /{user}/reviews
+    pattern:  /reviews
     defaults: { _controller: PxSPeerReviewingBundle:Reviews:reviews }
-    
-PxSPeerReviewingBundle_feedback:
-    pattern:  /{user}/peer
-    defaults: { _controller: PxSPeerReviewingBundle:Reviews:feedback }
 
 PxSPeerReviewingBundle_reviews_detail:
-    pattern:  /{user}/reviews/{review}
+    pattern:  /reviews/{review}
     defaults: { _controller: PxSPeerReviewingBundle:Reviews:detail }
+    
+PxSPeerReviewingBundle_feedback:
+    pattern:  /feedback
+    defaults: { _controller: PxSPeerReviewingBundle:Reviews:feedback }

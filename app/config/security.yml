@@ -27,6 +27,7 @@ security:
             pattern:    ^/
             form_login:
                 provider: fos_userbundle
+                default_target_path: /reviews
                 csrf_provider: form.csrf_provider
             logout: true
             anonymous: true

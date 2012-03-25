@@ -2,9 +2,9 @@
 	<div class="navbar-inner">
 		<div class="container">
 			{% if user is defined %}
-				<a class="brand" href="{{ path('PxSPeerReviewingBundle_reviews', { user: user.id }) }}">PeerReviewer</a>
+				<a class="brand" href="{{ path('PxSPeerReviewingBundle_reviews') }}">PeerReviewer</a>
 			{% else %}
-				<a class="brand" href="{{ path('PxSPeerReviewingBundle_homepage') }}">PeerReview</a>
+				<a class="brand" href="{{ path('fos_user_security_login') }}">PeerReviewer</a>
 			{% endif %}
 			{% if user is defined %}
 				<ul class="nav">
