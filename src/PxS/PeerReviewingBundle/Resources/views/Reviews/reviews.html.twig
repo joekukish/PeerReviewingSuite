@@ -17,15 +17,9 @@
 							</div>
 							<img rel="tooltip" data-original-title="{{ entry.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- entry.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
 							<p class="review-title "> {{ entry.assignment }} </p>
-							<p class="review-date">{{ entry.timestamp | date('M d')}}</p>
+							<p class="review-date">{{ entry.timestamp | date('M d, h:ia')}}</p>
 							<div class="review-right-components">
 								<ul class="review-stats">
-									{#
-									<li>
-							            <strong>{{ entry.score | number_format(1, ".", " ")}}</strong>
-							            <span>score</span>
-									</li>
-									#}
 									<li>
 							            <strong>NA</strong>
 							            <span>feedback score</span>
@@ -40,7 +34,7 @@
 					{% endfor %}
 				</ol>
 			{% else %}
-				<p> You have no reviews available </p>
+				<p> You haven't provided reviews! </p>
 			{% endif %}
 		</div>
 	</div>

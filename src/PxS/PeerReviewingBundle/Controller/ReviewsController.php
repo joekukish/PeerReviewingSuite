@@ -90,9 +90,8 @@ class ReviewsController extends PeerReviewingBundleBaseController
 				// goes back to the reviews page.
 				return $this->redirect($this->generateUrl('PxSPeerReviewingBundle_reviews'));
 			}
-			
+			// indicates that it was not created successfully.
 			$this->get('session')->setFlash('error', 'Failed to create the review');
-			
 		}
     	
     	return $this->render('PxSPeerReviewingBundle:Reviews:new.html.twig', array('page'=>'new-review', 'form'=> $form->createView()));
@@ -100,8 +99,10 @@ class ReviewsController extends PeerReviewingBundleBaseController
     
     public function detailAction($id)
     {
+    	// gets the current user of the app.
         $user = $this->getUser();
-    			
+
+        // finds the review using the id.
 		$review = $this->getDoctrine()->getRepository('PxSPeerReviewingBundle:Review')
     			->find($id);
 
@@ -114,8 +115,8 @@ class ReviewsController extends PeerReviewingBundleBaseController
 			return $this->render('PxSPeerReviewingBundle:Reviews:detail.html.twig', array('page'=>'reviews', 'review' => $review));
 	    else if($review->getPresenter()->getId() == $user->getId())
 	    	return $this->render('PxSPeerReviewingBundle:Reviews:detail.html.twig', array('page'=>'feedback', 'review' => $review));
-	    else
-	    	return $this->redirect($this->generateUrl('PxSPeerReviewingBundle_reviews'));
-	    	
+	    
+	    // goes back to the reviews page since the user doesn't have permissions to view the page.
+		return $this->redirect($this->generateUrl('PxSPeerReviewingBundle_reviews'));
     }
 }
