@@ -8,10 +8,10 @@
 			{% endif %}
 			{% if user is defined %}
 				<ul class="nav">
-					<li {% if page == 'reviews' %} class="active" {% endif %}><a href="{{ path('PxSPeerReviewingBundle_reviews', { user: user.id }) }}">Reviews</a></li>
-					<li {% if page == 'feedback' %} class="active" {% endif %}><a href="{{ path('PxSPeerReviewingBundle_feedback', { user: user.id }) }}">Feedback</a></li>
+					<li {% if page == 'reviews' %} class="active" {% endif %}><a href="{{ path('PxSPeerReviewingBundle_reviews') }}">Reviews</a></li>
+					<li {% if page == 'feedback' %} class="active" {% endif %}><a href="{{ path('PxSPeerReviewingBundle_feedback') }}">Feedback</a></li>
 					<li class="divider-vertical"></li>
-					<li {% if page == 'new-review' %} class="active" {% endif %}><a href="{{ path('PxSPeerReviewingBundle_feedback', { user: user.id }) }}">New Review</a></li>
+					<li {% if page == 'new-review' %} class="active" {% endif %}><a href="{{ path('PxSPeerReviewingBundle_feedback') }}">New Review</a></li>
 				</ul>
 				<ul class="nav pull-right">
 					<li><a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
