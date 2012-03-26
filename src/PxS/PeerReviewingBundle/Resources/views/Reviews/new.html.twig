@@ -21,7 +21,7 @@
 							{{ ideaCount }}
 						{% endif %}
 			    	</h3>
-			    	{{ form_widget(review.description, {'attr':{class:'span4', style:'height:50px;'}}) }}
+			    	{{ form_widget(review.description, {'attr':{class:'span4', style:'height:50px;', placeholder:'Comments on the '~ review.vars.value.type }}) }}
 			    {% endfor %}
 			    <h3> Score </h3>
 			    {{ form_widget(form.score) }}

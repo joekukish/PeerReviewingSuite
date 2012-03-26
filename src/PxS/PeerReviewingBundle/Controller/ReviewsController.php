@@ -59,7 +59,6 @@ class ReviewsController extends PeerReviewingBundleBaseController
     	{
 	    	$comment = new Comment();
 	    	$comment->setType('idea');
-	    	$comment->setDescription('Commentario sobre la idea.');
 	    	$comment->setReview($review);
 	
 	    	$review->addComment($comment);
@@ -67,7 +66,6 @@ class ReviewsController extends PeerReviewingBundleBaseController
     	
     	$comment = new Comment();
     	$comment->setType('presentation');
-    	$comment->setDescription('Comentario de la presentacion');
     	$comment->setReview($review);
 
     	$review->addComment($comment);
