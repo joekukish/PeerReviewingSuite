@@ -17,10 +17,12 @@
 			{% endif %}
 		
 			<div class="review-group-item review-group-details">
-				<img rel="tooltip" data-original-title="{{ review.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
-				<div class="arrow">
-					<i class="icon-arrow-right"></i>
-				</div>
+				{% if owner %}
+					<img rel="tooltip" data-original-title="{{ review.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+					<div class="arrow">
+						<i class="icon-arrow-right"></i>
+					</div>
+				{% endif %}
 				<img rel="tooltip" data-original-title="{{ review.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
 				<p class="review-title "> {{ review.assignment }} </p>
 				<p class="review-date">{{ review.timestamp | date('M d')}}</p>
@@ -83,11 +85,9 @@
 	<script src="{{ asset('bundles/pxspeerreviewing/js/jquery.rating.min.js') }}"></script>
 	<script>
 		$('body').tooltip({
-				selector: "[rel=tooltip]",
-				placement: "bottom"
-			});
-		 
-			// $('form :radio.star').rating('readonly', true, true);
+			selector: "[rel=tooltip]",
+			placement: "bottom"
+		});
 	</script>
 {% endblock %}
 

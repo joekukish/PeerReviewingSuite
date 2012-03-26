@@ -54,10 +54,20 @@ class ReviewsController extends PeerReviewingBundleBaseController
     	$review->setReviewer($user);
     	$review->setTimestamp(new \DateTime('now'));
 
-    	// creates the initial comments
+		// creates the initial comments
+    	for($i = 0; $i < 3; $i++)
+    	{
+	    	$comment = new Comment();
+	    	$comment->setType('idea');
+	    	$comment->setDescription('Commentario sobre la idea.');
+	    	$comment->setReview($review);
+	
+	    	$review->addComment($comment);
+    	}
+    	
     	$comment = new Comment();
-    	$comment->setType('idea');
-    	$comment->setDescription('Esta es una prueba');
+    	$comment->setType('presentation');
+    	$comment->setDescription('Comentario de la presentacion');
     	$comment->setReview($review);
 
     	$review->addComment($comment);

@@ -3,56 +3,29 @@
 {% import "PxSPeerReviewingBundle::macros.html.twig" as m %}
 
 {% block content %}
-
-<form class="form-horizontal" action="{{ path('PxSPeerReviewingBundle_reviews_new') }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
-
-    <input class="btn btn-primary" type="submit" />
-</form>
 	<div class="row">
-		<div class="span12">
-		
+		<div class="span6">			
 			<h2>Peer Reviewing</h2>
-			<p> Enter a scored based on the usefulness of each comment. </p>
-		
-			<div class="review-group-item review-group-details">
-				<img rel="tooltip" data-original-title="{{ review.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
-				<div class="arrow">
-					<i class="icon-arrow-right"></i>
-				</div>
-				<img rel="tooltip" data-original-title="{{ review.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
-				<p class="review-title "> {{ review.assignment }} </p>
-				<p class="review-date">{{ review.timestamp | date('M d')}}</p>
-				<div class="review-right-components">
-					<ul class="review-stats">
-						<li>
-				            <strong>{{ review.score | number_format(1, ".", " ")}}</strong>
-				            <span>score</span>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="span6">
-			<form method="POST">
-				{% set ideaCount = 0 %}
-				{% for comment in review.comments %}
-					<div class="review-comment">
-						<h3>
-							{% if comment.type == 'idea' %}
-								{% set ideaCount = ideaCount + 1 %}
-								{{ comment.type | capitalize }} {{ ideaCount }}
-							{% else %}	
-								{{ comment.type | capitalize }}
-							{% endif %}
-					 		{{ m.starRating(comment.id, comment.score | default('0')) }}
-						</h3>
-						<pre><p>{{ comment.description }}</p></pre>
-					</div>
-				{% endfor %}
-				
+			<p> Fill the following form to submit a review. </p>
+			
+			<form class="form-vertical" action="{{ path('PxSPeerReviewingBundle_reviews_new') }}" method="POST" {{ form_enctype(form) }}>
+				<h3> Presenter </h3>
+			    {{ form_widget(form.presenter) }}
+			    
+			    {% set ideaCount = 0 %}
+			    {% for review in form.comments %}
+			    	<h3>
+			    		{{ review.vars.value.type | capitalize }}
+						{% if review.vars.value.type == 'idea' %}
+							{% set ideaCount = ideaCount + 1 %}
+							{{ ideaCount }}
+						{% endif %}
+			    	</h3>
+			    	{{ form_widget(review.description, {'attr':{class:'span4', style:'height:50px;'}}) }}
+			    {% endfor %}
+			    <h3> Score </h3>
+			    {{ form_widget(form.score) }}
+				{{ form_rest(form) }}
 				<div class="review-actions">
 					<button type="submit" class="btn btn-primary" > Submit </button>
 				</div>
@@ -65,15 +38,11 @@
 	<script src="{{ asset('bundles/pxspeerreviewing/js/jquery.rating.min.js') }}"></script>
 	<script>
 		$('body').tooltip({
-				selector: "[rel=tooltip]",
-				placement: "bottom"
-			});
-		 
-			$('form :radio.star').rating();
+			selector: "[rel=tooltip]",
+			placement: "bottom"
+		});
 	</script>
 {% endblock %}
-
-		
         
 {% block stylesheets %}
 	<link href="{{ asset('bundles/pxspeerreviewing/css/jquery.rating.css') }}" rel="stylesheet">
