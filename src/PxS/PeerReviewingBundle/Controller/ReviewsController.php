@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use PxS\PeerReviewingBundle\Entity\Review;
 use PxS\PeerReviewingBundle\Entity\Comment;
 use PxS\PeerReviewingBundle\Form\Type\ReviewType;
+use PxS\PeerReviewingBundle\Form\Type\CommentFeedbackType;
 
 class ReviewsController extends PeerReviewingBundleBaseController
 {
@@ -60,14 +61,13 @@ class ReviewsController extends PeerReviewingBundleBaseController
 	    	$comment = new Comment();
 	    	$comment->setType('idea');
 	    	$comment->setReview($review);
-	
 	    	$review->addComment($comment);
     	}
     	
+    	// adds one presentation comment.
     	$comment = new Comment();
     	$comment->setType('presentation');
     	$comment->setReview($review);
-
     	$review->addComment($comment);
     	
     	// creates the form used to fill the data.
@@ -94,7 +94,7 @@ class ReviewsController extends PeerReviewingBundleBaseController
     	return $this->render('PxSPeerReviewingBundle:Reviews:new.html.twig', array('page'=>'new-review', 'form'=> $form->createView()));
     }
     
-    public function detailAction($id)
+    public function detailAction(Request $request, $id)
     {
     	// gets the current user of the app.
         $user = $this->getUser();
@@ -103,15 +103,39 @@ class ReviewsController extends PeerReviewingBundleBaseController
 		$review = $this->getDoctrine()->getRepository('PxSPeerReviewingBundle:Review')
     			->find($id);
 
+		// checks if the review exists.
 	    if (!$review) {
 	        // throw $this->createNotFoundException('No review found with the given id '.$id);
 	        return $this->redirect($this->generateUrl('PxSPeerReviewingBundle_reviews'));
 	    }
 	    
+    	// creates the form used to fill the data.
+    	$form = $this->createFormBuilder($review)
+    		->add('comments', 'collection', array('type'=> new CommentFeedbackType()))
+    		->getForm();
+
+    	// checks if the review is being updated.
+		if($request->getMethod() == 'POST') {
+			$form->bindRequest($request);
+			if($form->isValid()) {
+				
+				// stores the object into the DB.
+				$em = $this->getDoctrine()->getEntityManager();
+				$em->persist($review);
+				$em->flush();
+				
+				$this->get('session')->setFlash('success', 'The comment scores were updated successfully!');
+			} else {
+				// indicates that it was not created successfully.
+				$this->get('session')->setFlash('error', 'The comment scores could not be saved.');
+			}
+		}
+		
 	    // gets the page based on the ownership of the review.
 	    $page = $review->getReviewer()->getId() == $user->getId() ? 'reviews' : 'feedback'; 
 	    
-		return $this->render('PxSPeerReviewingBundle:Reviews:detail.html.twig', array('page'=>$page, 'review' => $review));
+	    // 'review' => $review
+		return $this->render('PxSPeerReviewingBundle:Reviews:detail.html.twig', array('page'=>$page, 'form'=> $form->createView()));
     }
     
     private function groupReviewsByAssignment($reviews)

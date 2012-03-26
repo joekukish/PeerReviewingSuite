@@ -1,10 +1,25 @@
 {% extends "PxSPeerReviewingBundle::layout.html.twig" %}
 
+{% form_theme form _self %}
+
+{% block choice_widget %}
+	<div class="review-star-rating">
+		{% for i in 1..5 %}
+			{% set score = (4 + (i-1) * 0.5) %}
+			<input class="star required" {{ attr | yaml_dump }} {% if attr.disabled | default(false) %} disabled="disabled" {% endif %} {{ block('widget_attributes') }} type="radio" value="{{ score }}" name="{{- id -}}" {% if score == value %} checked="checked" {% endif %} />
+		{% endfor %}
+	</div>
+{% endblock choice_widget %}
+
+{% block field_row %}
+	{{ form_widget(form) }}
+{% endblock %}
+
 {% import "PxSPeerReviewingBundle::macros.html.twig" as m %}
 
 {% block content %}
 
-	{% set owner = (app.user.id == review.reviewer.id) %}
+	{% set owner = (app.user.id == form.vars.value.reviewer.id) %}
 
 	<div class="row">
 		<div class="span12">			
@@ -18,32 +33,32 @@
 		
 			<div class="review-group-item review-group-details">
 				{% if owner %}
-					<img rel="tooltip" data-original-title="{{ review.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+					<img rel="tooltip" data-original-title="{{ form.vars.value.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- form.vars.value.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
 					<div class="arrow">
 						<i class="icon-arrow-right"></i>
 					</div>
 				{% endif %}
-				<img rel="tooltip" data-original-title="{{ review.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
-				<p class="review-title "> {{ review.assignment }} </p>
-				<p class="review-date">{{ review.timestamp | date('M d')}}</p>
+				<img rel="tooltip" data-original-title="{{ form.vars.value.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- form.vars.value.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+				<p class="review-title "> {{ form.vars.value.assignment }} </p>
+				<p class="review-date">{{ form.vars.value.timestamp | date('M d')}}</p>
 				<div class="review-right-components">
 					<ul class="review-stats">
 						{% set feedbackScore = 0 %}
 						{% set incomplete = false %}
 						
-						{% for comment in review.comments if comment.score is not null %}
+						{% for comment in form.vars.value.comments if comment.score is not null %}
 							{% set feedbackScore = feedbackScore + comment.score  %}
 						{% else %}
 							{% set incomplete = true %}	
 						{% endfor %}
 						<li>
-				            <strong>{{ not incomplete ? ((feedbackScore / (review.comments | length ))) | number_format(1, ".", " ") : 'NA' }}</strong>
+				            <strong>{{ not incomplete ? ((feedbackScore / (form.vars.value.comments | length ))) | number_format(1, ".", " ") : 'NA' }}</strong>
 				            <span>feedback score</span>
 						</li>
 						
 						{% if owner %}
 							<li>
-					            <strong>{{ review.score | number_format(1, ".", " ")}}</strong>
+					            <strong>{{ form.vars.value.score | number_format(1, ".", " ")}}</strong>
 					            <span>score</span>
 							</li>
 						{% endif %}
@@ -54,9 +69,9 @@
 	</div>
 	<div class="row">
 		<div class="span6">
-			<form class="form-vertical" method="POST">
+			<form class="form-vertical" action="{{ path('PxSPeerReviewingBundle_reviews_detail', {id: form.vars.value.id}) }}" method="POST" {{ form_enctype(form) }}>
 				{% set ideaCount = 0 %}
-				{% for comment in review.comments %}
+				{% for comment in form.vars.value.comments %}
 					<div class="review-comment">
 						<h3>
 							{{ comment.type | capitalize }}
@@ -66,7 +81,8 @@
 								{{ ideaCount }}
 							{% endif %}
 							
-					 		{{ m.starRating(comment.id, comment.score | default('0'), owner) }}
+							{{ form_widget(form.comments[loop.index0], {'attr': {disabled:'disabled'} }) }}
+					 		{# {{ m.starRating('form[comments][' ~ loop.index0 ~ '][score]', comment.score | default('0'), owner) }} #}
 						</h3>
 						<pre><p>{{ comment.description }}</p></pre>
 					</div>
@@ -76,6 +92,8 @@
 						<button type="submit" class="btn btn-primary" > Submit </button>
 					</div>
 				{% endif %}
+				{{ form_rest(form) }}
+				
 			</form>
 		</div>
 	</div>

@@ -3,7 +3,7 @@
 		{# Pass, Satisfactory, OK, Very Good, Excellent #}
 		{% for i in 1..5 %}
 			{% set value = (4 + (i-1) * 0.5) %}
-			<input {% if readonly %} disabled="disabled" {% endif %} class="star required" type="radio" value="{{ value }}" name="rating-{{- id -}}" {% if initial == value %} checked="checked" {% endif %}/>
+			<input {% if readonly %} disabled="disabled" {% endif %} class="star required" type="radio" value="{{ value }}" name="{{- id -}}" {% if initial == value %} checked="checked" {% endif %}/>
 		{% endfor %}
 	</div>
 {% endmacro %}
