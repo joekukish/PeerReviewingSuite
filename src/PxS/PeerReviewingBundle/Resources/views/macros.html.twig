@@ -1,9 +1,9 @@
-{% macro starRating(id, initial) %}
+{% macro starRating(id, initial, readonly) %}
 	<div class="review-star-rating">
-		<input class="star" type="radio" value="1" name="rating-{{- id -}}" title="Worst" {% if initial == 1 %} checked="checked" {% endif %}/>
-		<input class="star" type="radio" value="2" name="rating-{{- id -}}" title="Bad" {% if initial == 2 %} checked="checked" {% endif %}/>
-		<input class="star" type="radio" value="3" name="rating-{{- id -}}" title="OK" {% if initial == 3 %} checked="checked" {% endif %}/>
-		<input class="star" type="radio" value="4" name="rating-{{- id -}}" title="Good" {% if initial == 4 %} checked="checked" {% endif %}/>
-		<input class="star" type="radio" value="5" name="rating-{{- id -}}" title="Best" {% if initial == 5 %} checked="checked" {% endif %}/>
-	</div>	
+		{# Pass, Satisfactory, OK, Very Good, Excellent #}
+		{% for i in 1..5 %}
+			{% set value = (4 + (i-1) * 0.5) %}
+			<input {% if readonly %} disabled="disabled" {% endif %} class="star required" type="radio" value="{{ value }}" name="rating-{{- id -}}" {% if initial == value %} checked="checked" {% endif %}/>
+		{% endfor %}
+	</div>
 {% endmacro %}

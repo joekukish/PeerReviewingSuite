@@ -7,32 +7,43 @@
 			
 			{% if reviews | length > 0 %}
 				<p> These are reviews that you've given. Here you can view them, edit them and learn how your comments were rated.</p>
-				<h3 class="review-group-header">First Review</h3>
-				<ol class="review-group">
-					{% for entry in reviews %}
-						<li class="review-group-item">
-							<img rel="tooltip" data-original-title="{{ entry.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- entry.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
-							<div class="arrow">
-								<i class="icon-arrow-right"></i>
-							</div>
-							<img rel="tooltip" data-original-title="{{ entry.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- entry.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
-							<p class="review-title "> {{ entry.assignment }} </p>
-							<p class="review-date">{{ entry.timestamp | date('M d, h:ia')}}</p>
-							<div class="review-right-components">
-								<ul class="review-stats">
-									<li>
-							            <strong>NA</strong>
-							            <span>feedback score</span>
-									</li>
-									<li>
-							            <strong><a href="{{ path('PxSPeerReviewingBundle_reviews_detail', { id: entry.id }) }}"><img height="24" width="24" src={{ asset('bundles/pxspeerreviewing/img/next.png') }} /></a></strong>
-							            <span>edit</span>
-									</li>
-								</ul>
-							</div>
-						</li>
-					{% endfor %}
-				</ol>
+				{% for groupName, assignments in reviews %}
+					<h3 class="review-group-header"> {{ groupName }} </h3>
+					<ol class="review-group">
+						{% for entry in assignments %}
+							<li class="review-group-item">
+								<img rel="tooltip" data-original-title="{{ entry.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- entry.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+								<div class="arrow">
+									<i class="icon-arrow-right"></i>
+								</div>
+								<img rel="tooltip" data-original-title="{{ entry.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- entry.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+								<p class="review-title "> {{ entry.assignment }} </p>
+								<p class="review-date">{{ entry.timestamp | date('M d, h:ia')}}</p>
+								<div class="review-right-components">
+									<ul class="review-stats">
+										{% set feedbackScore = 0 %}
+										{% set incomplete = false %}
+										
+										{% for comment in entry.comments if comment.score is not null %}
+											{% set feedbackScore = feedbackScore + comment.score  %}
+										{% else %}
+											{% set incomplete = true %}	
+										{% endfor %}
+	
+										<li>
+								            <strong>{{ not incomplete ? ((feedbackScore / (entry.comments | length ))) | number_format(1, ".", " ") : 'NA' }}</strong>
+								            <span>feedback score</span>
+										</li>
+										<li>
+								            <strong><a href="{{ path('PxSPeerReviewingBundle_reviews_detail', { id: entry.id }) }}"><img height="24" width="24" src={{ asset('bundles/pxspeerreviewing/img/next.png') }} /></a></strong>
+								            <span>edit</span>
+										</li>
+									</ul>
+								</div>
+							</li>
+						{% endfor %}
+					</ol>
+				{% endfor %}
 			{% else %}
 				<p> You haven't provided reviews! </p>
 			{% endif %}

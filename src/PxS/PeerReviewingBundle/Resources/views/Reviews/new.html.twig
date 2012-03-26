@@ -4,63 +4,61 @@
 
 {% block content %}
 
-<form action="{{ path('PxSPeerReviewingBundle_reviews_new') }}" method="post" {{ form_enctype(form) }}>
+<form class="form-horizontal" action="{{ path('PxSPeerReviewingBundle_reviews_new') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
 
     <input class="btn btn-primary" type="submit" />
 </form>
-	{% if review is defined %}
-		<div class="row">
-			<div class="span12">
-			
-				<h2>Peer Reviewing</h2>
-				<p> Enter a scored based on the usefulness of each comment. </p>
-			
-				<div class="review-group-item review-group-details">
-					<img rel="tooltip" data-original-title="{{ review.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
-					<div class="arrow">
-						<i class="icon-arrow-right"></i>
-					</div>
-					<img rel="tooltip" data-original-title="{{ review.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
-					<p class="review-title "> {{ review.assignment }} </p>
-					<p class="review-date">{{ review.timestamp | date('M d')}}</p>
-					<div class="review-right-components">
-						<ul class="review-stats">
-							<li>
-					            <strong>{{ review.score | number_format(1, ".", " ")}}</strong>
-					            <span>score</span>
-							</li>
-						</ul>
-					</div>
+	<div class="row">
+		<div class="span12">
+		
+			<h2>Peer Reviewing</h2>
+			<p> Enter a scored based on the usefulness of each comment. </p>
+		
+			<div class="review-group-item review-group-details">
+				<img rel="tooltip" data-original-title="{{ review.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+				<div class="arrow">
+					<i class="icon-arrow-right"></i>
+				</div>
+				<img rel="tooltip" data-original-title="{{ review.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+				<p class="review-title "> {{ review.assignment }} </p>
+				<p class="review-date">{{ review.timestamp | date('M d')}}</p>
+				<div class="review-right-components">
+					<ul class="review-stats">
+						<li>
+				            <strong>{{ review.score | number_format(1, ".", " ")}}</strong>
+				            <span>score</span>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="span6">
-				<form method="POST">
-					{% set ideaCount = 0 %}
-					{% for comment in review.comments %}
-						<div class="review-comment">
-							<h3>
-								{% if comment.type == 'idea' %}
-									{% set ideaCount = ideaCount + 1 %}
-									{{ comment.type | capitalize }} {{ ideaCount }}
-								{% else %}	
-									{{ comment.type | capitalize }}
-								{% endif %}
-						 		{{ m.starRating(comment.id, comment.score | default('0')) }}
-							</h3>
-							<pre><p>{{ comment.description }}</p></pre>
-						</div>
-					{% endfor %}
-					
-					<div class="review-actions">
-						<button type="submit" class="btn btn-primary" > Submit </button>
+	</div>
+	<div class="row">
+		<div class="span6">
+			<form method="POST">
+				{% set ideaCount = 0 %}
+				{% for comment in review.comments %}
+					<div class="review-comment">
+						<h3>
+							{% if comment.type == 'idea' %}
+								{% set ideaCount = ideaCount + 1 %}
+								{{ comment.type | capitalize }} {{ ideaCount }}
+							{% else %}	
+								{{ comment.type | capitalize }}
+							{% endif %}
+					 		{{ m.starRating(comment.id, comment.score | default('0')) }}
+						</h3>
+						<pre><p>{{ comment.description }}</p></pre>
 					</div>
-				</form>
-			</div>
+				{% endfor %}
+				
+				<div class="review-actions">
+					<button type="submit" class="btn btn-primary" > Submit </button>
+				</div>
+			</form>
 		</div>
-	{% endif %}
+	</div>
 {% endblock %}
 
 {% block javascripts %}

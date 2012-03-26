@@ -4,6 +4,7 @@
 		<div class="span12">
 			<h2>{% include "PxSPeerReviewingBundle::userbox.html.twig" %}</h2>
 			<br />
+
 			{% if reviews | length > 0 %}
 				<p> Here's your feedback on the presentations you've made! They are all annonymous and scoreless to discourage biased opinions. You can rate each comment based on its usefulness. To do so, click on the view icon and use the stars to rate them.</p> 
 				{% for groupName, assignments in reviews %}

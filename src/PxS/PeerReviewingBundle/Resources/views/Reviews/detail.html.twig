@@ -4,60 +4,79 @@
 
 {% block content %}
 
-	{% if review is defined %}
-		<div class="row">
-			<div class="span12">
-			
-				<h2>Peer Reviewing</h2>
+	{% set owner = (app.user.id == review.reviewer.id) %}
+
+	<div class="row">
+		<div class="span12">			
+			<h2>Peer Reviewing</h2>
+	
+			{% if owner %}
+				<p> Here you can learn about the usefulness of each comment you've given. </p>
+			{% else %}
 				<p> Enter a scored based on the usefulness of each comment. </p>
-			
-				<div class="review-group-item review-group-details">
-					<img rel="tooltip" data-original-title="{{ review.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
-					<div class="arrow">
-						<i class="icon-arrow-right"></i>
-					</div>
-					<img rel="tooltip" data-original-title="{{ review.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
-					<p class="review-title "> {{ review.assignment }} </p>
-					<p class="review-date">{{ review.timestamp | date('M d')}}</p>
-					<div class="review-right-components">
-						<ul class="review-stats">
+			{% endif %}
+		
+			<div class="review-group-item review-group-details">
+				<img rel="tooltip" data-original-title="{{ review.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+				<div class="arrow">
+					<i class="icon-arrow-right"></i>
+				</div>
+				<img rel="tooltip" data-original-title="{{ review.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- review.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+				<p class="review-title "> {{ review.assignment }} </p>
+				<p class="review-date">{{ review.timestamp | date('M d')}}</p>
+				<div class="review-right-components">
+					<ul class="review-stats">
+						{% set feedbackScore = 0 %}
+						{% set incomplete = false %}
+						
+						{% for comment in review.comments if comment.score is not null %}
+							{% set feedbackScore = feedbackScore + comment.score  %}
+						{% else %}
+							{% set incomplete = true %}	
+						{% endfor %}
+						<li>
+				            <strong>{{ not incomplete ? ((feedbackScore / (review.comments | length ))) | number_format(1, ".", " ") : 'NA' }}</strong>
+				            <span>feedback score</span>
+						</li>
+						
+						{% if owner %}
 							<li>
 					            <strong>{{ review.score | number_format(1, ".", " ")}}</strong>
 					            <span>score</span>
 							</li>
-						</ul>
-					</div>
+						{% endif %}
+					</ul>
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="span6">
-				<form method="POST">
-					{% set ideaCount = 0 %}
-					{% for comment in review.comments %}
-						<div class="review-comment">
-							<h3>
-								{% if comment.type == 'idea' %}
-									{% set ideaCount = ideaCount + 1 %}
-									{{ comment.type | capitalize }} {{ ideaCount }}
-								{% else %}	
-									{{ comment.type | capitalize }}
-								{% endif %}
-						 		{{ m.starRating(comment.id, comment.score | default('0')) }}
-							</h3>
-							<pre><p>{{ comment.description }}</p></pre>
-						</div>
-					{% endfor %}
-					
+	</div>
+	<div class="row">
+		<div class="span6">
+			<form class="form-vertical" method="POST">
+				{% set ideaCount = 0 %}
+				{% for comment in review.comments %}
+					<div class="review-comment">
+						<h3>
+							{{ comment.type | capitalize }}
+
+							{% if comment.type == 'idea' %}
+								{% set ideaCount = ideaCount + 1 %}
+								{{ ideaCount }}
+							{% endif %}
+							
+					 		{{ m.starRating(comment.id, comment.score | default('0'), owner) }}
+						</h3>
+						<pre><p>{{ comment.description }}</p></pre>
+					</div>
+				{% endfor %}
+				{% if not owner %}
 					<div class="review-actions">
 						<button type="submit" class="btn btn-primary" > Submit </button>
 					</div>
-				</form>
-			</div>
+				{% endif %}
+			</form>
 		</div>
-	{% else %}
-		The selected review does not exit
-	{% endif %}
+	</div>
 {% endblock %}
 
 {% block javascripts %}
@@ -68,7 +87,7 @@
 				placement: "bottom"
 			});
 		 
-			$('form :radio.star').rating();
+			// $('form :radio.star').rating('readonly', true, true);
 	</script>
 {% endblock %}
 
@@ -93,12 +112,14 @@
 			font-weight: bold;
 			color: black;
 			line-height:50px;
+			text-align:center;
 		}
 		.review-right-components ul.review-stats li span {
 			display: block;
 			margin-top: -10px;
 			font-size: 11px;
 			color: #999;
+			text-align:center;
 		}
 
 		.review-group {

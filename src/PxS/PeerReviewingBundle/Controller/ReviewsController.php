@@ -14,13 +14,16 @@ class ReviewsController extends PeerReviewingBundleBaseController
 {
     public function reviewsAction()
     {
+    	// gets the current user of the application
     	$user = $this->getUser();
 
-//        $reviews = $this->getDoctrine()
-//    		->getRepository('PxSPeerReviewingBundle:Review')
-//    		->findBy(array(), array('timestamp'=>'asc'));
+    	// gets the reviews in which the current user was the reviewer
+        $reviews = $this->getDoctrine()
+    		->getRepository('PxSPeerReviewingBundle:Review')
+    		->findBy(array('reviewer'=>$user->getId()), array('assignment'=>'DESC', 'timestamp'=>'DESC'));
 	    
-        return $this->render('PxSPeerReviewingBundle:Reviews:reviews.html.twig', array('page'=>'reviews', 'reviews' => $user->getReviews()));
+		// renders the reviews page with the grouped reviews.
+        return $this->render('PxSPeerReviewingBundle:Reviews:reviews.html.twig', array('page'=>'reviews', 'reviews' => $this->groupReviewsByAssignment($reviews)));
     }
 
     public function feedbackAction()
@@ -34,22 +37,8 @@ class ReviewsController extends PeerReviewingBundleBaseController
     		->getRepository('PxSPeerReviewingBundle:Review')
     		->findBy(array('presenter'=>$user->getId()), array('assignment'=>'DESC', 'timestamp'=>'DESC'));
 
-
-		// array where the reviews will be grouped by assignment.
-		$groupedReviews = array();
-		
-		// groups the reviews by assignment
-		foreach ($reviews as $i => $entry)
-		{
-			// creates the group if it didn't exist
-			if(!isset($groupedReviews[$entry->getAssignment()]))
-				$groupedReviews[$entry->getAssignment()] = array();
-				
-			// adds the review to the group.
-			$groupedReviews[$entry->getAssignment()][] = $entry;
-		}
-
-        return $this->render('PxSPeerReviewingBundle:Reviews:feedback.html.twig', array('page'=>'feedback', 'reviews' => $groupedReviews));
+    	// renders the feedback page with the grouped reviews.
+        return $this->render('PxSPeerReviewingBundle:Reviews:feedback.html.twig', array('page'=>'feedback', 'reviews' => $this->groupReviewsByAssignment($reviews)));
     }
 
     public function newAction(Request $request)
@@ -111,12 +100,26 @@ class ReviewsController extends PeerReviewingBundleBaseController
 	        return $this->redirect($this->generateUrl('PxSPeerReviewingBundle_reviews'));
 	    }
 	    
-	    if($review->getReviewer()->getId() == $user->getId())
-			return $this->render('PxSPeerReviewingBundle:Reviews:detail.html.twig', array('page'=>'reviews', 'review' => $review));
-	    else if($review->getPresenter()->getId() == $user->getId())
-	    	return $this->render('PxSPeerReviewingBundle:Reviews:detail.html.twig', array('page'=>'feedback', 'review' => $review));
+	    // gets the page based on the ownership of the review.
+	    $page = $review->getReviewer()->getId() == $user->getId() ? 'reviews' : 'feedback'; 
 	    
-	    // goes back to the reviews page since the user doesn't have permissions to view the page.
-		return $this->redirect($this->generateUrl('PxSPeerReviewingBundle_reviews'));
+		return $this->render('PxSPeerReviewingBundle:Reviews:detail.html.twig', array('page'=>$page, 'review' => $review));
+    }
+    
+    private function groupReviewsByAssignment($reviews)
+    {
+    	$groupedReviews = array();	
+		// groups the reviews by assignment
+		foreach ($reviews as $i => $entry)
+		{
+			// creates the group if it didn't exist
+			if(!isset($groupedReviews[$entry->getAssignment()]))
+				$groupedReviews[$entry->getAssignment()] = array();
+				
+			// adds the review to the group.
+			$groupedReviews[$entry->getAssignment()][] = $entry;
+		}
+		
+		return $groupedReviews;
     }
 }
