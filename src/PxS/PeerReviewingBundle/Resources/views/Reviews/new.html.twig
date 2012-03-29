@@ -9,7 +9,9 @@
 			<p> Fill the following form to submit a review. </p>
 			
 			<form class="form-vertical" action="{{ path('PxSPeerReviewingBundle_reviews_new') }}" method="POST" {{ form_enctype(form) }}>
+				{{ form_errors(form) }}
 				<h3> Presenter </h3>
+				{{ form_errors(form.presenter) }}
 			    {{ form_widget(form.presenter) }}
 			    
 			    {% set ideaCount = 0 %}
@@ -21,9 +23,11 @@
 							{{ ideaCount }}
 						{% endif %}
 			    	</h3>
+			    	{{ form_errors(review.description) }}
 			    	{{ form_widget(review.description, {'attr':{class:'span4', style:'height:50px;', placeholder:'Comments on the '~ review.vars.value.type }}) }}
 			    {% endfor %}
 			    <h3> Score </h3>
+			    {{ form_errors(form.score) }}
 			    {{ form_widget(form.score) }}
 				{{ form_rest(form) }}
 				<div class="review-actions">

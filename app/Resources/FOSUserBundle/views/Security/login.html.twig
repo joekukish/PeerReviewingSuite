@@ -1,5 +1,16 @@
 {% extends 'FOSUserBundle::layout.html.twig' %}
 
+{% block content %}
+	{% if error %}
+        <div class="alert alert-error">
+        	<a class="close" data-dismiss="alert">×</a>
+            {{ error }}
+        </div>
+    {% endif %}
+    
+    {{ parent() }}
+	
+{% endblock %}
 {% block fos_user_content %}
         <h2>Welcome!</h2>
         <form class="form-vertical" action="{{ path('fos_user_security_check') }}" method="POST">

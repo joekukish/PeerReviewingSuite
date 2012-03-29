@@ -18,11 +18,17 @@ class ReviewsController extends PeerReviewingBundleBaseController
     	// gets the current user of the application
     	$user = $this->getUser();
 
-    	// gets the reviews in which the current user was the reviewer
-        $reviews = $this->getDoctrine()
-    		->getRepository('PxSPeerReviewingBundle:Review')
-    		->findBy(array('reviewer'=>$user->getId()), array('assignment'=>'DESC', 'timestamp'=>'DESC'));
+    	$userFilter = array();
+    	
+	    // if it's not an admin, the reviews are limited to a single user.
+	    if (!$this->get('security.context')->isGranted('ROLE_ADMIN'))
+			$userFilter = array('reviewer'=>$user->getId());
 	    
+	    // obtains the reviews from the database.
+		$reviews = $this->getDoctrine()
+	    		->getRepository('PxSPeerReviewingBundle:Review')
+	    		->findBy($userFilter, array('assignment'=>'DESC', 'timestamp'=>'DESC'));	    		
+	    		
 		// renders the reviews page with the grouped reviews.
         return $this->render('PxSPeerReviewingBundle:Reviews:reviews.html.twig', array('page'=>'reviews', 'reviews' => $this->groupReviewsByAssignment($reviews)));
     }
@@ -50,7 +56,7 @@ class ReviewsController extends PeerReviewingBundleBaseController
     	// creates a new review
     	$review = new Review;
     	// hard-wires the active assignment
-    	$review->setAssignment('First Review');
+    	$review->setAssignment('Second Review');
     	// sets the reviewer based on the session.
     	$review->setReviewer($user);
     	$review->setTimestamp(new \DateTime('now'));
@@ -74,10 +80,11 @@ class ReviewsController extends PeerReviewingBundleBaseController
     	$form = $this->createForm(new ReviewType(), $review);
     		
 		// checks if a a new Review needs to be stored into the database
-		if($request->getMethod() == 'POST') {
+		if($request->getMethod() == 'POST')
+		{
 			$form->bindRequest($request);
-			if($form->isValid()) {
-				
+			if($form->isValid())
+			{
 				// stores the object into the DB.
 				$em = $this->getDoctrine()->getEntityManager();
 				$em->persist($review);
@@ -104,10 +111,9 @@ class ReviewsController extends PeerReviewingBundleBaseController
     			->find($id);
 
 		// checks if the review exists.
-	    if (!$review) {
+	    if (!$review)
 	        // throw $this->createNotFoundException('No review found with the given id '.$id);
 	        return $this->redirect($this->generateUrl('PxSPeerReviewingBundle_reviews'));
-	    }
 	    
     	// creates the form used to fill the data.
     	$form = $this->createFormBuilder($review)
@@ -138,6 +144,13 @@ class ReviewsController extends PeerReviewingBundleBaseController
 		return $this->render('PxSPeerReviewingBundle:Reviews:detail.html.twig', array('page'=>$page, 'form'=> $form->createView()));
     }
     
+    /**
+     * Groups the reviews based on the assignments.
+     * 
+     * @param $reviews reviews obtained from the DB that need to be grouped.
+     * 
+     * @return returns  	an array whose keys are the assignments and contain an array of the reviews that match that key.
+     */
     private function groupReviewsByAssignment($reviews)
     {
     	$groupedReviews = array();	
