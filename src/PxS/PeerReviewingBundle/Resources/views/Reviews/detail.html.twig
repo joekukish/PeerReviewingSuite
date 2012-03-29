@@ -27,12 +27,14 @@
 	
 			{% if owner %}
 				<p> Here you can learn about the usefulness of each comment you've given. </p>
+			{% elseif is_granted('ROLE_ADMIN') %}
+				<p> Comments given by the reviewer plus the rating of the feedback given by the presenter. </p>
 			{% else %}
 				<p> Enter a scored based on the usefulness of each comment. </p>
 			{% endif %}
 		
 			<div class="review-group-item review-group-details">
-				{% if owner %}
+				{% if owner or is_granted('ROLE_ADMIN') %}
 					<img rel="tooltip" data-original-title="{{ form.vars.value.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- form.vars.value.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
 					<div class="arrow">
 						<i class="icon-arrow-right"></i>
@@ -56,7 +58,7 @@
 				            <span>feedback score</span>
 						</li>
 						
-						{% if owner %}
+						{% if owner or is_granted('ROLE_ADMIN') %}
 							<li>
 					            <strong>{{ form.vars.value.score | number_format(1, ".", " ")}}</strong>
 					            <span>score</span>
@@ -87,7 +89,7 @@
 						<pre><p>{{ comment.description }}</p></pre>
 					</div>
 				{% endfor %}
-				{% if not owner %}
+				{% if not (owner or is_granted('ROLE_ADMIN')) %}
 					<div class="review-actions">
 						<button type="submit" class="btn btn-primary" > Submit </button>
 					</div>
@@ -124,6 +126,11 @@
 			float: left;
 			margin-right: 20px;
 		}
+		
+		.review-right-components ul.review-stats li:last-child {
+			margin-right: 0px;
+		}
+		
 		.review-right-components ul.review-stats li strong {
 			display: block;
 			font-size: 36px;

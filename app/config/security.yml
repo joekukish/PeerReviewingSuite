@@ -1,10 +1,10 @@
 security:
     encoders:
         "FOS\UserBundle\Model\UserInterface": sha512
-
     role_hierarchy:
+        ROLE_REVIEWER:    ROLE_USER
         ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
         fos_userbundle:
@@ -36,7 +36,8 @@ security:
                 key:      Ew6jlvD8qCrwZbiGf_U35UH9I
                 lifetime: 2592000
                 path:     /
-                domain:   ~            
+                domain:   ~
+            switch_user: true
 
     access_control:
         # Parts available to anonymous users
