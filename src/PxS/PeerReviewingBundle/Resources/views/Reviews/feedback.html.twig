@@ -12,6 +12,12 @@
 					<ol class="review-group">
 						{% for entry in assignments %}
 							<li class="review-group-item">
+							 	{% if is_granted('ROLE_ADMIN') %}
+									<img rel="tooltip" data-original-title="{{ entry.reviewer.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- entry.reviewer.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+									<div class="arrow">
+										<i class="icon-arrow-right"></i>
+									</div>
+								{% endif %}
 								<img rel="tooltip" data-original-title="{{ entry.presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- entry.presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
 								<p class="review-title "> {{ entry.assignment }} </p>
 								<p class="review-date">{{ entry.timestamp | date('M d, h:ia')}}</p>
