@@ -14,7 +14,7 @@ class ReviewType extends AbstractType
     	$id = $options['data']->getReviewer()->getId();
     	
 		$builder->add('score', 'choice', array(
-			'choices'=>array('3.5'=>'< 4.0 Fail', '4.0'=>'4 Pass', '4.5'=>'4.5 Satisfactory', '5.0'=> '5 Good', '5.5'=>'5.5 Very Good', '6.0'=> '6 Excellent'),
+			'choices'=>array('3.5'=>'< 4.0 Fail', '4.0'=>'4.0 Pass', '4.5'=>'4.5 Satisfactory', '5.0'=> '5.0 Good', '5.5'=>'5.5 Very Good', '6.0'=> '6.0 Excellent'),
 			'empty_value'=>'Rate the presentation',
 			'empty_data'=>null
 		));

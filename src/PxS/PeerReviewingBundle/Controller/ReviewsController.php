@@ -40,9 +40,18 @@ class ReviewsController extends PeerReviewingBundleBaseController
 
     	// gets the reviews in which the current user was the presenter
     	// meaning that he got some feedback.
-        $reviews = $this->getDoctrine()
-    		->getRepository('PxSPeerReviewingBundle:Review')
-    		->findBy(array('presenter'=>$user->getId()), array('assignment'=>'DESC', 'timestamp'=>'DESC'));
+//        $reviews = $this->getDoctrine()
+//    		->getRepository('PxSPeerReviewingBundle:Review')
+//    		->findBy(array('presenter'=>$user->getId(), 'timestamp'=>now()), array('assignment'=>'DESC', 'timestamp'=>'DESC'));
+
+    	// feedback is shown one day later.
+		$reviews = $this->getDoctrine()->getRepository('PxSPeerReviewingBundle:Review')
+					->createQueryBuilder('r')
+						->where('r.presenter = :presenter AND DATE_DIFF(:now, r.timestamp) > 0')
+			    		->orderBy('r.timestamp', 'DESC')
+			    		->setParameter('presenter', $user->getId())
+			    		->setParameter('now', date('Y-m-d H:i:s'))
+			    			->getQuery()->getResult();
 
     	// renders the feedback page with the grouped reviews.
         return $this->render('PxSPeerReviewingBundle:Reviews:feedback.html.twig', array('page'=>'feedback', 'reviews' => $this->groupReviewsByAssignment($reviews)));
