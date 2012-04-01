@@ -15,7 +15,7 @@ class ReviewType extends AbstractType
     	
 		$builder->add('score', 'choice', array(
 			'choices'=>array('4.0'=>'4 Pass', '4.5'=>'4.5 Satisfactory', '5.0'=> '5 Good', '5.5'=>'5.5 Very Good', '6.0'=> '6 Excellent'),
-			'empty_label'=>'Rate the presentation',
+			'empty_value'=>'Rate the presentation',
 			'empty_data'=>null
 		));
 		$builder->add('comments', 'collection', array('type'=> new CommentType()));
