@@ -1,3 +1,7 @@
+PxSPeerReviewingBundle_stats:
+    pattern:  /stats
+    defaults: { _controller: PxSPeerReviewingBundle:Statistics:stats }
+    
 PxSPeerReviewingBundle_dashboard:
     pattern:  /
     defaults: { _controller: PxSPeerReviewingBundle:Reviews:reviews }

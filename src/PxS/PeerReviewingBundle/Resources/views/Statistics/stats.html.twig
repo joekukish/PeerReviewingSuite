@@ -1,0 +1,143 @@
+{% extends "PxSPeerReviewingBundle::layout.html.twig" %}
+{% block content %}
+	<div class="row">
+		<div class="span12">
+			<h2>Average scores</h2>
+			<p> Average scores obtained in each assignment, </p>
+			<br />
+
+			{% if reviews | length > 0 %}
+				<ol class="review-group">
+					{% for entry in reviews %}
+						<li class="review-group-item">
+							<img rel="tooltip" data-original-title="{{ entry[0].presenter.name }}" class="gravatar" height="48" src="https://secure.gravatar.com/avatar/{{- entry[0].presenter.email | lower | trim | md5 -}}?s=140&amp;d=retro" width="48" />
+							<p class="review-title ">{{ entry[0].presenter.name }}  </p>
+							<p class="review-date">{{ entry[0].assignment }}</p>
+							<div class="review-right-components">
+								<ul class="review-stats">
+									<li>
+							            <strong>{{ entry.average_score | number_format(1, ".", " ") }}</strong>
+							            <span>average score</span>
+									</li>
+								</ul>
+							</div>
+						</li>
+					{% endfor %}
+				</ol>
+			{% else %}
+				<p> You haven't provided reviews! </p>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		$('body').tooltip({
+			selector: "[rel=tooltip]",
+			placement: "bottom"
+		});
+	</script>
+{% endblock %}
+
+{% block stylesheets %}
+	<style>
+	
+		.review-group-header {
+			margin: 15px 0 0 0;
+			padding: 0 8px;
+			font-size: 14px;
+			color: #3A505B;
+			text-shadow: 0 1px white;
+			background: #E6F1F6;
+			border: 1px solid #C5D5DD;
+			border-radius: 4px;
+		}
+		
+		.review-right-components ul.review-stats {
+			float: left;
+			margin-top: -8px;
+			margin-right: 0px;
+		}
+		.review-right-components ul.review-stats li {
+			list-style-type: none;
+			float: left;
+			margin-right: 20px;
+		}
+		
+		.review-right-components ul.review-stats li:last-child {
+			margin-right: 0px;
+		}
+		.review-right-components ul.review-stats li strong {
+			display: block;
+			font-size: 36px;
+			font-weight: bold;
+			color: black;
+			line-height:50px;
+			text-align:center;			
+		}
+		.review-right-components ul.review-stats li span {
+			display: block;
+			margin-top: -10px;
+			font-size: 11px;
+			color: #999;
+			text-align:center;
+		}
+
+		.review-group {
+			list-style-type: none;
+			margin: 0 0 15px 0;
+			background: #F7FBFC;
+			border: 1px solid #C5D5DD;
+			border-radius: 4px;
+		}
+		
+		.review-group-item {
+			position: relative;
+			padding: 8px;
+			height: 50px;
+			border-top: 1px solid #C5D5DD; 
+		}
+
+		.review-group-item:first-child {
+			border-top:none;
+		}
+				
+		ol .review-group-item:hover {
+			background: #FCFCE2;
+		}
+		
+		.review-group-item .gravatar {
+			float: left;
+			border: 1px solid #C6C6C6;
+			margin-right: 5px;
+		}
+		
+		.review-group-item .arrow {
+			float: left;
+			margin-top: 17px;
+			margin-right: 5px;
+		}
+		
+		.review-group-item .review-title {
+			margin: 1px 0 1px 0;
+			font-size: 17px;
+			font-weight: bold;
+			margin-top:7px;
+		}
+
+		.review-group-item .review-right-components {
+			position:absolute;
+			top:8px;
+			right:8px;
+		}
+		
+		.review-group-item .review-date {
+			font-size: 12px;
+			color: #888;
+		}
+		
+		
+	</style>
+{% endblock %}
+
