@@ -8,7 +8,7 @@
 			{% if is_granted('ROLE_USER') and app.user is defined %}
 				<a class="brand" href="{{ path('PxSPeerReviewingBundle_reviews') }}">PeerReviewer</a>
 				<ul class="nav">
-					{% if is_granted('ROLE_USER') %}
+					{% if is_granted('ROLE_SUPER_ADMIN') %}
 						<li {% if page == 'stats' %} class="active" {% endif %}><a href="{{ path('PxSPeerReviewingBundle_stats') }}">Stats</a></li>
 					{% endif %}
 						

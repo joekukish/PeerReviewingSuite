@@ -69,7 +69,7 @@ class Review
 	 * @ORM\Column(type="string")
 	 * @Assert\NotBlank
 	 * @Assert\Type("string")
-	 * @Assert\Choice({"First Review", "Second Review"})
+	 * @Assert\Choice({"First Review", "Second Review", "Third Review"})
 	 */
 	protected $assignment;
 

@@ -66,7 +66,7 @@ class ReviewsController extends PeerReviewingBundleBaseController
     	// creates a new review
     	$review = new Review;
     	// hard-wires the active assignment
-    	$review->setAssignment('Second Review');
+    	$review->setAssignment('Third Review');
     	// sets the reviewer based on the session.
     	$review->setReviewer($user);
     	$review->setTimestamp(new \DateTime('now'));
