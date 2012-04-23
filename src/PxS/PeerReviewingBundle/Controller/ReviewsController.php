@@ -48,10 +48,10 @@ class ReviewsController extends PeerReviewingBundleBaseController
 		$reviews = $this->getDoctrine()->getRepository('PxSPeerReviewingBundle:Review')
 					->createQueryBuilder('r')
 						//  AND DATE_DIFF(:now, r.timestamp) > 0
-						->where('r.presenter = :presenter')
+						->where('r.presenter = :presenter AND DATE_DIFF(:now, r.timestamp) > 0')
 			    		->orderBy('r.timestamp', 'DESC')
 			    		->setParameter('presenter', $user->getId())
-			    		// ->setParameter('now', date('Y-m-d H:i:s'))
+			    		->setParameter('now', date('Y-m-d H:i:s'))
 			    			->getQuery()->getResult();
 
     	// renders the feedback page with the grouped reviews.
