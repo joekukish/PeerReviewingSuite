@@ -23,7 +23,7 @@ class ReviewsController extends PeerReviewingBundleBaseController
 	    // if it's not an admin, the reviews are limited to a single user.
 	    if (!$this->get('security.context')->isGranted('ROLE_ADMIN'))
 			$userFilter = array('reviewer'=>$user->getId());
-	    
+
 	    // obtains the reviews from the database.
 		$reviews = $this->getDoctrine()
 	    		->getRepository('PxSPeerReviewingBundle:Review')
@@ -66,7 +66,7 @@ class ReviewsController extends PeerReviewingBundleBaseController
     	// creates a new review
     	$review = new Review;
     	// hard-wires the active assignment
-    	$review->setAssignment('Third Review');
+    	$review->setAssignment('Fourth Review');
     	// sets the reviewer based on the session.
     	$review->setReviewer($user);
     	$review->setTimestamp(new \DateTime('now'));
